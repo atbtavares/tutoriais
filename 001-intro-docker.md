@@ -1,4 +1,12 @@
-Vamos implementar um container para usar o **echo** do Ubuntu e que imprima na tela "Hello!"
+```bash
+comandos utilizados
+
+docker info   # informações da instalação do docker
+docker vesion # versão da engine
+
+```
+
+Vamos implementar um container que imprima na tela "Hello!"
 
 ```bash
 docker run ubuntu /bin/echo Hello!
@@ -24,7 +32,7 @@ Quando executamos novamente a imagem já está presente e não é mais baixada:
 
 ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/2164ff60-74c1-426d-abc9-1ce98c34e6fa/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/2164ff60-74c1-426d-abc9-1ce98c34e6fa/Untitled.png)
 
-O container com ubuntu foi criado, o comando bash echo foi executado e seu resultado foi para a sua saída padrão. Para verificar que o comando terminou de executar podemos usar o comando
+O container com ubuntu foi criado, o comando bash echo foi executado e seu resultado foi para a sua saída padrão. Para verificar que o comando terminou de executar podemos usar o comando 
 
 ```bash
 docker ps -a
