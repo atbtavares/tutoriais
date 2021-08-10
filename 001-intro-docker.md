@@ -1,4 +1,8 @@
-Alguns comandos básicos
+# Tutorial hands-on docker
+
+## Comandos Muito Básicos
+
+Alguns comandos básicos para verificar dados da versão e informações da instalação do docker
 
 ```
 docker vesion # versão da engine
@@ -98,15 +102,15 @@ Server:
 
 
 
-Vamos executar um container que imprima na tela "Hello!"
+## Executando um container com ubuntu
+
+Vamos executar um container com **ubuntu** que imprima na tela **"Hello!"** usando o comando **echo**
 
 ```bash
 docker run ubuntu /bin/echo Hello!
 ```
 
-Como não tem imagem do ubuntu na máquina local ela é baixada antes da execução do  comando
-
-Nesse comando, após o docker baixar o ubuntu é acessado o binário /bin/echo e executado para o argumento "Hello!"
+Como não tem imagem do ubuntu na máquina local ela é baixada antes. Nesse comando, após o docker baixar o ubuntu é acessado o binário /bin/echo e executado para o argumento "Hello!"
 
 ```
 atbta@ANDRE:~$ docker run ubuntu /bin/echo Hello!
@@ -135,13 +139,13 @@ atbta@ANDRE:~$ docker run ubuntu /bin/echo Hello! 2
 Hello! 2
 ```
 
-O container com ubuntu foi criado, o comando bash echo foi executado e seu resultado foi para a sua saída padrão. Para verificar que o comando terminou de executar podemos usar o comando 
+Um novo container com ubuntu foi criado, o comando bash echo foi executado e seu resultado foi para a sua saída padrão "Hello! 2". Para verificar que o container executou e terminou podemos usar o comando :
 
 ```bash
 docker ps -a
 ```
 
-O parametro -a mostra os containers que terminaram a sua execução
+O parametro **-a** mostra os containers que terminaram a sua execução:
 
 ```
 atbta@ANDRE:~$ docker ps -a
@@ -149,6 +153,12 @@ CONTAINER ID   IMAGE     COMMAND                CREATED          STATUS         
 bb8dc1c7cbc3   ubuntu    "/bin/echo Hello! 2"   39 seconds ago   Exited (0) 38 seconds ago             goofy_kilby
 d8691994ec21   ubuntu    "/bin/echo Hello!"     3 minutes ago    Exited (0) 3 minutes ago              trusting_hofstadt
 ```
+
+
+
+
+
+## Verificando alguns comandos de ajuda
 
 O comando `docker ps --help` mostra outros parâmetros e funções do `docker ps` 
 
@@ -294,6 +304,12 @@ Agora vamos usar os parâmetros `-i` e `-t`
 
 
 
+Agora vamos criar um novo container com ubuntu e verificar parametros de rede para que possamos entender como funciona a interação do SO host com o SO do container. 
+
+
+
+## Criando um container com nginx 
+
 Isso irá nos prover acesso ao container conforme você pode verificar abaixo:
 
 ```
@@ -383,9 +399,27 @@ root@ad96e9bfb220:/#
 
 ```
 
+Caso tenha o container tenha parado por algum motivo como o servidor do docker ter sido desligado, o seu dia pode ter terminado e você deu ctrl+c para encerrar a sessão. Nesse caso o container terá sido destruido.
 
+No trecho abaixo estamos nessas circunstancias e ao tentar fazer novamente o comando para iniciar o container teremos um erro. Então apagamos esse container então iniciar um novo onde repetiremos as configurações, já que o antigo teve sua execução terminada. Lembre-se de que após executado o container perde a memória e o que foi instalado, bem como arquivos gerados. 
 
-OK
+```
+atbta@ANDRE:~$ docker run -it --name app_nginx ubuntu
+docker: Error response from daemon: Conflict. The container name "/app_nginx" is already in use by container "ad96e9bfb220ab5f5b86bfe8a34f3b1c0b80ebaa8b8cd838150b10b487ad5119". You have to remove (or rename) that container to be able to reuse that name.
+See 'docker run --help'.
+atbta@ANDRE:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+atbta@ANDRE:~$ docker ps -a
+CONTAINER ID   IMAGE     COMMAND                CREATED        STATUS                      PORTS     NAMES
+ad96e9bfb220   ubuntu    "bash"                 20 hours ago   Exited (255) 2 hours ago              app_nginx
+d1d2bbebd819   ubuntu    "/bin/bash"            21 hours ago   Exited (100) 20 hours ago             determined_ptolemy
+bb8dc1c7cbc3   ubuntu    "/bin/echo Hello! 2"   21 hours ago   Exited (0) 21 hours ago               goofy_kilby
+d8691994ec21   ubuntu    "/bin/echo Hello!"     21 hours ago   Exited (0) 21 hours ago               trusting_hofstadter
+atbta@ANDRE:~$ docker rm "ad96e9bfb220ab5f5b86bfe8a34f3b1c0b80ebaa8b8cd838150b10b487ad5119"
+ad96e9bfb220ab5f5b86bfe8a34f3b1c0b80ebaa8b8cd838150b10b487ad5119
+atbta@ANDRE:~$ docker run -it --name app_nginx ubuntu
+root@264d8f062aca:/#
+```
 
 
 
