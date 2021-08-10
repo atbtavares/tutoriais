@@ -306,6 +306,8 @@ Agora vamos usar os parâmetros `-i` e `-t`
 
 Agora vamos criar um novo container com ubuntu e verificar parametros de rede para que possamos entender como funciona a interação do SO host com o SO do container. 
 
+## Container com terminal interativo de ubuntu 
+
 
 
 ## Criando um container com nginx 
