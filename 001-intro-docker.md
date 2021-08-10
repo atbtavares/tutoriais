@@ -1,5 +1,33 @@
 # Tutorial hands-on docker
 
+## Comandos utilizados neste tutorial
+
+```
+docker images
+
+docker ps
+
+docker ps -a
+
+docker run ubuntu /bin/echo Hello!
+
+docker run -i -t ubuntu /bin/bash
+
+docker run -it --name app_nginx ubuntu
+
+docker rm "ad96e9bfb220ab5f5b86bfe8a34f3b1c0b80ebaa8b8cd838150b10b487ad5119"
+
+docker commit 43576c70d511 ubuntu/app_nginx
+
+docker run -it --rm -p 8080:80 --name app_nginx ubuntu/app_nginx
+
+docker run -it --rm -p 8080:80 --name app_nginx ubuntu/app_nginx /bin/bash
+
+docker run -d -p 8080:80 --name app_nginx ubuntu/nginx /usr/sbin/nginx -g "daemon off;"
+```
+
+
+
 ## Comandos Muito Básicos
 
 Alguns comandos básicos para verificar dados da versão e informações da instalação do docker
@@ -197,15 +225,15 @@ Server:
 
 
 
-## Executando um container com ubuntu
+## INÍCIO - Executando um container com ubuntu
 
-Vamos executar um container com **ubuntu** que imprima na tela **Hello** usando o comand  `echo`. O comando `docker run` é a criação do processo no SO Host, a criação do container.
+Vamos executar um container com **ubuntu** que imprima na tela **Hello** usando o comand  **`echo`**. O comando **`docker run`** é a criação do processo no SO Host, a criação do container.
 
 ```bash
 docker run ubuntu /bin/echo Hello!
 ```
 
-Como não tem imagem do **ubuntu** na máquina local ela é baixada antes. Nesse comando, após o docker baixar o **ubuntu** é acessado o binário `/bin/echo` dele e executado para o argumento "**Hello!**"
+Como não tem imagem do **ubuntu** na máquina local ela é baixada do Docker Hub. Após o docker baixar o **ubuntu** é executado o binário **`bin/echo`** dele para o argumento "**Hello!**"
 
 ```
 atbta@ANDRE:~$ docker run ubuntu /bin/echo Hello!
@@ -217,11 +245,11 @@ Status: Downloaded newer image for ubuntu:latest
 Hello!
 ```
 
-Onde aparece `16ec32c2132b: Pull complete` é uma camada. Neste caso há somente uma, mas quanto mais complexa a imagem mais camadas terá.
+Onde aparece **`16ec32c2132b: Pull complete`** é uma camada. Neste caso há somente uma, mas quanto mais complexa a imagem mais camadas terá.
 
-As camadas no docker podem ser reaproveitadas em outras imagens: se a gente instalar o debian, ele não vai baixar tudo do debian mas vai usar o que for possível do ubuntu que já baixou antes, em outras palavras, uma ou outra camada do ubuntu. 
+As camadas no docker podem ser reaproveitadas em outras imagens: se a gente instalar o debian, ele não vai baixar tudo do debian mas vai usar o que for possível do ubuntu que já baixou antes, em outras palavras, uma ou outra camada da imagem do ubuntu. 
 
-Podemos usar o comando docker images para verificar que o passo de baixar a imagem do ubuntu no comando anterior foi executado:
+Podemos usar o comando **`docker images`** para verificar que foi executado o passo de baixar a imagem do ubuntu no comando **`docker run`** realizado anteriormente:
 
 ```bash
 atbta@ANDRE:~$ docker images
@@ -248,9 +276,9 @@ O parametro `-a` mostra os containers que terminaram a sua execução:
 
 ```
 atbta@ANDRE:~$ docker ps -a
-CONTAINER ID   IMAGE     COMMAND                CREATED              STATUS                          PORTS     NAMES
-9744097d52ba   ubuntu    "/bin/echo Hello! 2"   54 seconds ago       Exited (0) 53 seconds ago                 quirky_gauss
-45e9e8ab8805   ubuntu    "/bin/echo Hello!"     About a minute ago   Exited (0) About a minute ago             musing_allen
+CONTAINER ID  IMAGE   COMMAND             CREATED            STATUS                       PORTS   NAMES
+e3cb1eee0ce0  ubuntu  "/bin/echo Hello! 2" 17 seconds ago     Exited (0) 17 seconds ago           competent_hawking
+3814c7c99d86  ubuntu  "/bin/echo Hello!"  About a minute ago Exited (0) About a minute ago        gracious_saha
 ```
 
 Um container é volátil e não se deve salvar dados nele. Após o término de sua execução ele é destruido.
@@ -394,7 +422,7 @@ Options:
 
 
 
-Em breve vamos usar os parâmetros `-i` e `-t` 
+A seguir vamos usar os parâmetros `-i` e `-t` 
 
 ```
   -i, --interactive                    Keep STDIN open even if not attached
@@ -417,69 +445,43 @@ Agora podemos executar comandos dentro do container **ubuntu**
 
 ```
 atbta@ANDRE:~$ docker run -i -t ubuntu /bin/bash
-root@9298f861ed56:/#
+root@107fb53948b8:/#
 ```
 
 Digitamos o comando `uname -a` e verificamos que realmente estamos dentro do container ao ver que o sistema é diferente do SO hospedeiro
 
 ```
-root@9298f861ed56:/# uname -a
-Linux 9298f861ed56 5.10.16.3-microsoft-standard-WSL2 #1 SMP Fri Apr 2 22:23:49 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+root@107fb53948b8:/# uname -a
+Linux 107fb53948b8 5.10.16.3-microsoft-standard-WSL2 #1 SMP Fri Apr 2 22:23:49 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
 ```
 
 Vamos instalar as ferramentas para verificar a rede **apt update** e depois **apt install net-tools**:
 
 ```
-root@9298f861ed56:/# apt update
+root@107fb53948b8:/# apt update && apt install net-tools
 Get:1 http://security.ubuntu.com/ubuntu focal-security InRelease [114 kB]
 Get:2 http://archive.ubuntu.com/ubuntu focal InRelease [265 kB]
-Get:3 http://security.ubuntu.com/ubuntu focal-security/universe amd64 Packages [787 kB]
-Get:4 http://archive.ubuntu.com/ubuntu focal-updates InRelease [114 kB]
+Get:3 http://archive.ubuntu.com/ubuntu focal-updates InRelease [114 kB]
+Get:4 http://security.ubuntu.com/ubuntu focal-security/multiverse amd64 Packages [30.6 kB]
 Get:5 http://archive.ubuntu.com/ubuntu focal-backports InRelease [101 kB]
-Get:6 http://archive.ubuntu.com/ubuntu focal/restricted amd64 Packages [33.4 kB]
-Get:7 http://archive.ubuntu.com/ubuntu focal/multiverse amd64 Packages [177 kB]
-Get:8 http://archive.ubuntu.com/ubuntu focal/universe amd64 Packages [11.3 MB]
-Get:9 http://security.ubuntu.com/ubuntu focal-security/main amd64 Packages [990 kB]
-Get:10 http://archive.ubuntu.com/ubuntu focal/main amd64 Packages [1275 kB]
-Get:11 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 Packages [1056 kB]
-Get:12 http://archive.ubuntu.com/ubuntu focal-updates/multiverse amd64 Packages [39.0 kB]
-Get:13 http://archive.ubuntu.com/ubuntu focal-updates/restricted amd64 Packages [478 kB]
-Get:14 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 Packages [1427 kB]
-Get:15 http://archive.ubuntu.com/ubuntu focal-backports/main amd64 Packages [2668 B]
-Get:16 http://archive.ubuntu.com/ubuntu focal-backports/universe amd64 Packages [6319 B]
-Get:17 http://security.ubuntu.com/ubuntu focal-security/multiverse amd64 Packages [30.6 kB]
-Get:18 http://security.ubuntu.com/ubuntu focal-security/restricted amd64 Packages [432 kB]
-Fetched 18.7 MB in 8s (2322 kB/s)
-Reading package lists... Done
-Building dependency tree
-Reading state information... Done
-3 packages can be upgraded. Run 'apt list --upgradable' to see them.
-```
-
-```
-root@9298f861ed56:/# apt install net-tools
-Reading package lists... Done
-Building dependency tree
-Reading state information... Done
+....
 The following NEW packages will be installed:
   net-tools
 0 upgraded, 1 newly installed, 0 to remove and 3 not upgraded.
 Need to get 196 kB of archives.
-After this operation, 864 kB of additional disk space will be used.
-Get:1 http://archive.ubuntu.com/ubuntu focal/main amd64 net-tools amd64 1.60+git20180626.aebd88e-1ubuntu1 [196 kB]
-Fetched 196 kB in 2s (126 kB/s)
-debconf: delaying package configuration, since apt-utils is not installed
-Selecting previously unselected package net-tools.
+...
 (Reading database ... 4127 files and directories currently installed.)
 Preparing to unpack .../net-tools_1.60+git20180626.aebd88e-1ubuntu1_amd64.deb ...
 Unpacking net-tools (1.60+git20180626.aebd88e-1ubuntu1) ...
 Setting up net-tools (1.60+git20180626.aebd88e-1ubuntu1) ...
+root@107fb53948b8:/#
+
 ```
 
 Podemos verificar a versão da distro:
 
 ```
-root@9298f861ed56:/# cat /etc/lsb-release
+root@107fb53948b8:/# cat /etc/lsb-release
 DISTRIB_ID=Ubuntu
 DISTRIB_RELEASE=20.04
 DISTRIB_CODENAME=focal
@@ -489,148 +491,263 @@ DISTRIB_DESCRIPTION="Ubuntu 20.04.2 LTS"
 E também verificar o IP do SO do container
 
 ```
-root@9298f861ed56:/# ifconfig eth0
+root@107fb53948b8:/# ifconfig eth0
 eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
         inet 172.17.0.2  netmask 255.255.0.0  broadcast 172.17.255.255
         ether 02:42:ac:11:00:02  txqueuelen 0  (Ethernet)
-        RX packets 13282  bytes 19591210 (19.5 MB)
+        RX packets 13966  bytes 20241259 (20.2 MB)
         RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 4275  bytes 235322 (235.3 KB)
+        TX packets 4765  bytes 265519 (265.5 KB)
         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 ```
 
-A faixa de IP é **172.17.0.0** com máscara **255.255.0.0** que é bem diferente do SO hospedeiro. Quando vamos criar uma interface de rede para o container usamos o IP do host somente. Não utilizamos IP de container porque a cada **docker run** o IP vai mudar. Então quando se trabalha com portainer não se utiliza o IP do container mas sim o IP do SO hospedeiro. Os DNSs que um cliente vê não vai ter o IP do container, mas sim do SO hospedeiro.
+A faixa de IP é **172.17.0.0** com máscara **255.255.0.0** que é bem diferente do IP do SO hospedeiro. Quando vamos criar uma interface de rede para o container usamos o IP do host somente. 
 
-Podemos verificar que o id do container ubuntu que criamos está listado em /etc/host: **9298f861ed56**
+Evitamos utilizar o IP do container porque a cada **docker run** ele vai mudar. Então quando se trabalha com **portainer** não se utiliza o IP do container mas sim o IP do SO hospedeiro. Os DNSs que um cliente vê não vai ter o IP do container, mas sim do SO hospedeiro.
+
+Podemos verificar que o id do container ubuntu que criamos está listado em /etc/host: **107fb53948b8**
 
 ```
-root@9298f861ed56:/# cat /etc/hosts
+root@107fb53948b8:/# cat /etc/hosts
 127.0.0.1       localhost
 ::1     localhost ip6-localhost ip6-loopback
 fe00::0 ip6-localnet
 ff00::0 ip6-mcastprefix
 ff02::1 ip6-allnodes
 ff02::2 ip6-allrouters
-172.17.0.2      9298f861ed56
+172.17.0.2      107fb53948b8
 ```
 
 Como pedimos interatividade ao executar o **docker run** se sairmos do bash a execução é terminada. E assim termina o ciclo de execução do container. 
 
-Em um possível deploy automático com containers não posso fazer algo dentro do container para resolver qualquer problema, ou até mesmo realizar alguma configuração. Toda parametrização de deploy automático deve ser feita na imagem. 
-
 Assim como um **programa** em execução é um **processo**, também uma **imagem docker** em execução é um **container**.
+
+```
+root@107fb53948b8:/# exit
+exit
+atbta@ANDRE:~$
+```
+
+Em um possível deploy automático com containers não posso fazer algo dentro do container para resolver qualquer problema, ou até mesmo realizar alguma configuração. Toda parametrização de deploy automático deve ser feita na imagem. 
 
 ## Criando um container com nginx 
 
-Isso irá nos prover acesso ao container conforme você pode verificar abaixo:
+Para nomear um container basta usar no `docker run`o parâmetro `--name`:
 
-```
-atbta@ANDRE:~$ docker run -i -t ubuntu /bin/bash
-root@d1d2bbebd819:/#
-root@d1d2bbebd819:/# uname -a
-Linux d1d2bbebd819 5.10.16.3-microsoft-standard-WSL2 #1 SMP Fri Apr 2 22:23:49 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
-
-```
-
-Lá dentro executamos o comando para verificar a versão da distribuição. Podemos executar alguns outros comandos dentro do container que estamos acessando
-
-```
-root@d1d2bbebd819:/# apt update
-Get:1 http://security.ubuntu.com/ubuntu focal-security InRelease [114 kB]
-Get:2 http://archive.ubuntu.com/ubuntu focal InRelease [265 kB]
-Get:3 http://security.ubuntu.com/ubuntu focal-security/multiverse amd64 Packages [30.6 kB]
-Get:4 http://security.ubuntu.com/ubuntu focal-security/restricted amd64 Packages [432 kB]
-Get:5 http://archive.ubuntu.com/ubuntu focal-updates InRelease [114 kB]
-Get:6 http://security.ubuntu.com/ubuntu focal-security/main amd64 Packages [989 kB]
-Get:7 http://archive.ubuntu.com/ubuntu focal-backports InRelease [101 kB]
-Get:8 http://archive.ubuntu.com/ubuntu focal/universe amd64 Packages [11.3 MB]
-Get:9 http://security.ubuntu.com/ubuntu focal-security/universe amd64 Packages [786 kB]
-Get:10 http://archive.ubuntu.com/ubuntu focal/restricted amd64 Packages [33.4 kB]
-Get:11 http://archive.ubuntu.com/ubuntu focal/multiverse amd64 Packages [177 kB]
-Get:12 http://archive.ubuntu.com/ubuntu focal/main amd64 Packages [1275 kB]
-Get:13 http://archive.ubuntu.com/ubuntu focal-updates/restricted amd64 Packages [478 kB]
-Get:14 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 Packages [1056 kB]
-Get:15 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 Packages [1427 kB]
-Get:16 http://archive.ubuntu.com/ubuntu focal-updates/multiverse amd64 Packages [39.0 kB]
-Get:17 http://archive.ubuntu.com/ubuntu focal-backports/main amd64 Packages [2668 B]
-Get:18 http://archive.ubuntu.com/ubuntu focal-backports/universe amd64 Packages [6319 B]
-Fetched 18.7 MB in 1min 7s (277 kB/s)
-Reading package lists... Done
-Building dependency tree
-Reading state information... Done
-3 packages can be upgraded. Run 'apt list --upgradable' to see them.
-
-root@d1d2bbebd819:/# cat /etc/lsb-release
-DISTRIB_ID=Ubuntu
-DISTRIB_RELEASE=20.04
-DISTRIB_CODENAME=focal
-DISTRIB_DESCRIPTION="Ubuntu 20.04.2 LTS"
-
-root@d1d2bbebd819:/# exit
-exit
-
-atbta@ANDRE:~$ docker ps -a
-CONTAINER ID   IMAGE     COMMAND                CREATED          STATUS                       PORTS     NAMES
-d1d2bbebd819   ubuntu    "/bin/bash"            21 minutes ago   Exited (100) 5 seconds ago             determined_ptolemy
-bb8dc1c7cbc3   ubuntu    "/bin/echo Hello! 2"   38 minutes ago   Exited (0) 37 minutes ago              goofy_kilby
-d8691994ec21   ubuntu    "/bin/echo Hello!"     40 minutes ago   Exited (0) 40 minutes ago              trusting_hofstadter
-
-atbta@ANDRE:~$ docker images
-REPOSITORY   TAG       IMAGE ID       CREATED       SIZE
-ubuntu       latest    1318b700e415   13 days ago   72.8MB
-
-```
-
-
+`docker run -i -t --name app_nginx ubuntu`
 
 Agora vamos configurar uma máquina com nginx a partir dos seguintes passos:
 
 * Executar um container iterativo
 * Dentro do container, vamos instalar o nginx
-
-
+* Vamos encerrar a sessão
 
 ```
 atbta@ANDRE:~$ docker run -it --name app_nginx ubuntu
-root@ad96e9bfb220:/# apt update
+root@df964faea9a1:/# apt update && apt install nginx -y
 Get:1 http://security.ubuntu.com/ubuntu focal-security InRelease [114 kB]
 Get:2 http://archive.ubuntu.com/ubuntu focal InRelease [265 kB]
 Get:3 http://security.ubuntu.com/ubuntu focal-security/restricted amd64 Packages [432 kB]
 Get:4 http://security.ubuntu.com/ubuntu focal-security/main amd64 Packages [989 kB]
-Get:5 http://archive.ubuntu.com/ubuntu focal-updates InRelease [114 kB]
-Get:6 http://archive.ubuntu.com/ubuntu focal-backports InRelease [101 kB]
-Get:7 http://security.ubuntu.com/ubuntu focal-security/universe amd64 Packages [786 kB]
-Get:8 http://security.ubuntu.com/ubuntu focal-security/multiverse amd64 Packages [30.6 kB]
 ...
 Setting up nginx-core (1.18.0-0ubuntu1.2) ...
 invoke-rc.d: could not determine current runlevel
 invoke-rc.d: policy-rc.d denied execution of start.
 Setting up nginx (1.18.0-0ubuntu1.2) ...
-Processing triggers for libc-bin (2.31-0ubuntu9.2) ...
-root@ad96e9bfb220:/#
-
+root@df964faea9a1:/# exit
+atbta@ANDRE:~$
 ```
 
-Caso tenha o container tenha parado por algum motivo como o servidor do docker ter sido desligado, o seu dia pode ter terminado e você deu ctrl+c para encerrar a sessão. Nesse caso o container terá sido destruido.
+Caso tenha o container tenha parado por algum motivo como: 1) o servidor do docker ter sido desligado ou ter terminado ou 2) você teclou ctrl+c para encerrar a sessão, ou ainda 3) foi executado exit no bash. Nesse caso o container terá sido destruído.
 
-No trecho abaixo estamos nessas circunstancias e ao tentar fazer novamente o comando para iniciar o container teremos um erro. Então apagamos esse container então iniciar um novo onde repetiremos as configurações, já que o antigo teve sua execução terminada. Lembre-se de que após executado o container perde a memória e o que foi instalado, bem como arquivos gerados. 
+No trecho abaixo estamos nessas circunstancias e ao tentar fazer novamente o comando para iniciar o container teremos um erro. 
 
 ```
 atbta@ANDRE:~$ docker run -it --name app_nginx ubuntu
-docker: Error response from daemon: Conflict. The container name "/app_nginx" is already in use by container "ad96e9bfb220ab5f5b86bfe8a34f3b1c0b80ebaa8b8cd838150b10b487ad5119". You have to remove (or rename) that container to be able to reuse that name.
+docker: Error response from daemon: Conflict. The container name "/app_nginx" is already in use by container "df964faea9a137edcb0b30b851fc2b16ccf271b68dd44acecd9ba5683aeae98c". You have to remove (or rename) that container to be able to reuse that name.
 See 'docker run --help'.
+```
+
+Para resolver vamos apagar esse container então iniciar um novo onde repetiremos as configurações, já que o antigo teve sua execução terminada. Lembre-se de que após executado o container perde a memória e o que foi instalado, bem como arquivos criados. 
+
+```
+docker rm "df964faea9a137edcb0b30b851fc2b16ccf271b68dd44acecd9ba5683aeae98c"
+```
+
+Isso cria uma imagem com base no que tinha no container anterior. Posteriormente quando trabalharmos mais com criação de imagens, será apresentado melhores formas
+
+```
+
 atbta@ANDRE:~$ docker ps
 CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+
 atbta@ANDRE:~$ docker ps -a
 CONTAINER ID   IMAGE     COMMAND                CREATED        STATUS                      PORTS     NAMES
 ad96e9bfb220   ubuntu    "bash"                 20 hours ago   Exited (255) 2 hours ago              app_nginx
 d1d2bbebd819   ubuntu    "/bin/bash"            21 hours ago   Exited (100) 20 hours ago             determined_ptolemy
 bb8dc1c7cbc3   ubuntu    "/bin/echo Hello! 2"   21 hours ago   Exited (0) 21 hours ago               goofy_kilby
 d8691994ec21   ubuntu    "/bin/echo Hello!"     21 hours ago   Exited (0) 21 hours ago               trusting_hofstadter
+
 atbta@ANDRE:~$ docker rm "ad96e9bfb220ab5f5b86bfe8a34f3b1c0b80ebaa8b8cd838150b10b487ad5119"
 ad96e9bfb220ab5f5b86bfe8a34f3b1c0b80ebaa8b8cd838150b10b487ad5119
+
 atbta@ANDRE:~$ docker run -it --name app_nginx ubuntu
 root@264d8f062aca:/#
+```
+
+Agora podemos executar o comando `apt update && apt install -y nginx curl` dentro do container ubuntu/app_nginx
+
+```
+root@43576c70d511:/# apt update && apt install -y nginx curl
+....
+Setting up libcurl4:amd64 (7.68.0-1ubuntu2.6) ...
+Setting up curl (7.68.0-1ubuntu2.6) ...
+Processing triggers for libc-bin (2.31-0ubuntu9.2) ...
+Processing triggers for ca-certificates (20210119~20.04.1) ...
+Updating certificates in /etc/ssl/certs...
+0 added, 0 removed; done.
+Running hooks in /etc/ca-certificates/update.d...
+done.
+root@43576c70d511:/# 
+```
+
+
+
+Iniciamos o servidor e testamos com o `curl`
+
+```
+root@43576c70d511:/# nginx
+root@43576c70d511:/# curl http://localhost
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+root@43576c70d511:/#
+root@43576c70d511:/# exit
+exit
+```
+
+Tudo OK. Após sair da máquina vamos executar `docker commit id ubuntu/app_nginx`para salvar o estado atual da máquina
+
+```
+atbta@ANDRE:~$ docker commit 43576c70d511 ubunto/app_nginx
+sha256:3e3fcf1072d5c2ba75b0afc0760c613e680634631b8fdcd9f9e79eb8da7fbd2f
+atbta@ANDRE:~$
+```
+
+Verificamos que a imagem criada é um pouco maior devido as instalações que foram realizadas.
+
+```
+atbta@ANDRE:~$ docker images
+REPOSITORY         TAG       IMAGE ID       CREATED          SIZE
+ubunto/app_nginx   latest    3e3fcf1072d5   48 seconds ago   173MB
+ubuntu             latest    1318b700e415   2 weeks ago      72.8MB
+```
+
+ Usar  o `docker commit` não é recomendado para salvar uma imagem. Em outro momento veremos a forma mais adequada para realizar essa operação.
+
+Agora vamos criar um container a partir da imagem criada `ubunto/app_nginx`
+
+Dessa vez no `docker run` utilizaremos a flag `-rm` indica que o container deve ser removido após execução do processo; Já a flag `-p`, indica que há mapeamento entre ambientes interno e externo através entre de portas do container e do host.
+
+```
+docker run -it -rm -p 8080:80 --name app_nginx ubunto/app_nginx
+```
+
+O resultado é um conflito porque o nome `app_nginx`deve ser único já que é um id de container
+
+```
+atbta@ANDRE:~$ docker run -it --rm -p 8080:80 --name app_nginx ubunto/app_nginx
+docker: Error response from daemon: Conflict. The container name "/app_nginx" is already in use by container "43576c70d5115271b4db2847758295983b78b59353467ad66661fe9b875525f6". You have to remove (or rename) that container to be able to reuse that name.
+See 'docker run --help'.
+```
+
+Nesse caso podemos remover com `docker rm app_nginx` para executar o comando `docker run -it --rm -p 8080:80 --name app_nginx ubunto/app_nginx`novamente
+
+```
+atbta@ANDRE:~$ docker rm "43576c70d5115271b4db2847758295983b78b59353467ad66661fe9b875525f6"
+43576c70d5115271b4db2847758295983b78b59353467ad66661fe9b875525f6
+```
+
+Vamos adicionar mais um parâmetro para que possamos utilizar o bash, além disso após iniciar o container também vamos rodar o serviço do nginx com o comando linux `service nginx start`
+
+```
+docker run -it -rm -p 8080:80 --name app_nginx ubunto/app_nginx /bin/bash
+```
+
+```
+atbta@ANDRE:~$ docker run -it --rm -p 8080:80 --name app_nginx ubunto/app_nginx /bin/bash
+root@0e1dafd5a6e1:/# service nginx start
+ * Starting nginx nginx                                                                                     [ OK ]
+ root@0e1dafd5a6e1:/#
+```
+
+Se você for em um navegador do SO host, então conseguirá acessar http://localhost:8080
+
+Assim tornamos acessível o nginx executado dentro do container pelo navegador do SO hospedeiro
+
+Vemos mais detalhes com o comando `netstat`
+
+```
+
+atbta@ANDRE:~/tutoriais$ sudo netstat -tlnp
+[sudo] password for atbta:
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 127.0.0.1:6010          0.0.0.0:*               LISTEN      227/./wslconnect
+tcp        0      0 127.0.0.1:6011          0.0.0.0:*               LISTEN      5853/./wslconnect
+tcp6       0      0 :::8080                 :::*                    LISTEN      -
+```
+
+Quando usamos no `docker run` a opção `--rm` e terminamos o container, não sobra nenhum rastro da execução dele no `docker ps -a`. Além disso, o nginx também não fica mais rodando
+
+```
+atbta@ANDRE:~$ docker run -it --rm -p 8080:80 --name app_nginx ubunto/app_nginx /bin/bash
+root@0e1dafd5a6e1:/# service nginx start
+ * Starting nginx nginx                                                                                                                                [ OK ]
+root@0e1dafd5a6e1:/# exit
+exit
+```
+
+Então vamos executar o mesmo comando mas agora sem interatividade:
+
+`docker run -d -p 8080:80 --name app_nginx ubunto/nginx /usr/sbin/nginx -g "daemon off;"` 
+
+```
+atbta@ANDRE:~$ docker run -d -p 8080:80 --name app_nginx ubuntu/nginx /usr/sbin/nginx -g "daemon off;"
+Unable to find image 'ubuntu/nginx:latest' locally
+latest: Pulling from ubuntu/nginx
+ea301a4e9092: Pull complete
+5a55ed894fa3: Pull complete
+269462602d82: Pull complete
+3c16aaaa1a67: Pull complete
+d7ccd4b3ea3b: Pull complete
+bb2c10db954a: Pull complete
+Digest: sha256:ccdfd11a0710b0a7c16a2d4c5ed342830d56dd9553a93b0485df57aeb0b0e85b
+Status: Downloaded newer image for ubuntu/nginx:latest
+d2663f379b9a4d8c5d7e02bb2d81555ee0e82092227a4c05f4cdeed642452695
+
 ```
 
 
@@ -647,7 +764,7 @@ root@264d8f062aca:/#
 
 
 
-​	
+
 
 Para remover o cache
 
