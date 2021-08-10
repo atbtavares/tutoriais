@@ -285,6 +285,124 @@ Options:
 
 
 
+Agora vamos usar os parâmetros `-i` e `-t` 
+
+```
+  -i, --interactive                    Keep STDIN open even if not attached
+  -t, --tty                            Allocate a pseudo-TTY
+```
+
+
+
+Isso irá nos prover acesso ao container conforme você pode verificar abaixo:
+
+```
+atbta@ANDRE:~$ docker run -i -t ubuntu /bin/bash
+root@d1d2bbebd819:/#
+root@d1d2bbebd819:/# uname -a
+Linux d1d2bbebd819 5.10.16.3-microsoft-standard-WSL2 #1 SMP Fri Apr 2 22:23:49 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+
+```
+
+Lá dentro executamos o comando para verificar a versão da distribuição. Podemos executar alguns outros comandos dentro do container que estamos acessando
+
+```
+root@d1d2bbebd819:/# apt update
+Get:1 http://security.ubuntu.com/ubuntu focal-security InRelease [114 kB]
+Get:2 http://archive.ubuntu.com/ubuntu focal InRelease [265 kB]
+Get:3 http://security.ubuntu.com/ubuntu focal-security/multiverse amd64 Packages [30.6 kB]
+Get:4 http://security.ubuntu.com/ubuntu focal-security/restricted amd64 Packages [432 kB]
+Get:5 http://archive.ubuntu.com/ubuntu focal-updates InRelease [114 kB]
+Get:6 http://security.ubuntu.com/ubuntu focal-security/main amd64 Packages [989 kB]
+Get:7 http://archive.ubuntu.com/ubuntu focal-backports InRelease [101 kB]
+Get:8 http://archive.ubuntu.com/ubuntu focal/universe amd64 Packages [11.3 MB]
+Get:9 http://security.ubuntu.com/ubuntu focal-security/universe amd64 Packages [786 kB]
+Get:10 http://archive.ubuntu.com/ubuntu focal/restricted amd64 Packages [33.4 kB]
+Get:11 http://archive.ubuntu.com/ubuntu focal/multiverse amd64 Packages [177 kB]
+Get:12 http://archive.ubuntu.com/ubuntu focal/main amd64 Packages [1275 kB]
+Get:13 http://archive.ubuntu.com/ubuntu focal-updates/restricted amd64 Packages [478 kB]
+Get:14 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 Packages [1056 kB]
+Get:15 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 Packages [1427 kB]
+Get:16 http://archive.ubuntu.com/ubuntu focal-updates/multiverse amd64 Packages [39.0 kB]
+Get:17 http://archive.ubuntu.com/ubuntu focal-backports/main amd64 Packages [2668 B]
+Get:18 http://archive.ubuntu.com/ubuntu focal-backports/universe amd64 Packages [6319 B]
+Fetched 18.7 MB in 1min 7s (277 kB/s)
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+3 packages can be upgraded. Run 'apt list --upgradable' to see them.
+
+root@d1d2bbebd819:/# cat /etc/lsb-release
+DISTRIB_ID=Ubuntu
+DISTRIB_RELEASE=20.04
+DISTRIB_CODENAME=focal
+DISTRIB_DESCRIPTION="Ubuntu 20.04.2 LTS"
+
+root@d1d2bbebd819:/# exit
+exit
+
+atbta@ANDRE:~$ docker ps -a
+CONTAINER ID   IMAGE     COMMAND                CREATED          STATUS                       PORTS     NAMES
+d1d2bbebd819   ubuntu    "/bin/bash"            21 minutes ago   Exited (100) 5 seconds ago             determined_ptolemy
+bb8dc1c7cbc3   ubuntu    "/bin/echo Hello! 2"   38 minutes ago   Exited (0) 37 minutes ago              goofy_kilby
+d8691994ec21   ubuntu    "/bin/echo Hello!"     40 minutes ago   Exited (0) 40 minutes ago              trusting_hofstadter
+
+atbta@ANDRE:~$ docker images
+REPOSITORY   TAG       IMAGE ID       CREATED       SIZE
+ubuntu       latest    1318b700e415   13 days ago   72.8MB
+
+```
+
+
+
+Agora vamos configurar uma máquina com nginx a partir dos seguintes passos:
+
+* Executar um container iterativo
+* Dentro do container, vamos instalar o nginx
+
+
+
+```
+atbta@ANDRE:~$ docker run -it --name app_nginx ubuntu
+root@ad96e9bfb220:/# apt update
+Get:1 http://security.ubuntu.com/ubuntu focal-security InRelease [114 kB]
+Get:2 http://archive.ubuntu.com/ubuntu focal InRelease [265 kB]
+Get:3 http://security.ubuntu.com/ubuntu focal-security/restricted amd64 Packages [432 kB]
+Get:4 http://security.ubuntu.com/ubuntu focal-security/main amd64 Packages [989 kB]
+Get:5 http://archive.ubuntu.com/ubuntu focal-updates InRelease [114 kB]
+Get:6 http://archive.ubuntu.com/ubuntu focal-backports InRelease [101 kB]
+Get:7 http://security.ubuntu.com/ubuntu focal-security/universe amd64 Packages [786 kB]
+Get:8 http://security.ubuntu.com/ubuntu focal-security/multiverse amd64 Packages [30.6 kB]
+...
+Setting up nginx-core (1.18.0-0ubuntu1.2) ...
+invoke-rc.d: could not determine current runlevel
+invoke-rc.d: policy-rc.d denied execution of start.
+Setting up nginx (1.18.0-0ubuntu1.2) ...
+Processing triggers for libc-bin (2.31-0ubuntu9.2) ...
+root@ad96e9bfb220:/#
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​	
+
 Para remover o cache
 
 ```
