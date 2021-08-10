@@ -5,11 +5,103 @@
 Alguns comandos básicos para verificar dados da versão e informações da instalação do docker
 
 ```
+docker
 docker vesion # versão da engine
 docker info   # informações da instalação do docker
 ```
 
-Exemplos desses comandos executados:
+Comando **docker** executado:
+
+```
+atbta@ANDRE:~/tutoriais$ docker
+
+Usage:  docker [OPTIONS] COMMAND
+
+A self-sufficient runtime for containers
+
+Options:
+      --config string      Location of client config files (default "/home/atbta/.docker")
+  -c, --context string     Name of the context to use to connect to the daemon (overrides DOCKER_HOST env var and default context set with "docker
+                           context use")
+  -D, --debug              Enable debug mode
+  -H, --host list          Daemon socket(s) to connect to
+  -l, --log-level string   Set the logging level ("debug"|"info"|"warn"|"error"|"fatal") (default "info")
+      --tls                Use TLS; implied by --tlsverify
+      --tlscacert string   Trust certs signed only by this CA (default "/home/atbta/.docker/ca.pem")
+      --tlscert string     Path to TLS certificate file (default "/home/atbta/.docker/cert.pem")
+      --tlskey string      Path to TLS key file (default "/home/atbta/.docker/key.pem")
+      --tlsverify          Use TLS and verify the remote
+  -v, --version            Print version information and quit
+
+Management Commands:
+  builder     Manage builds
+  buildx*     Build with BuildKit (Docker Inc., v0.5.1-docker)
+  compose*    Docker Compose (Docker Inc., v2.0.0-beta.6)
+  config      Manage Docker configs
+  container   Manage containers
+  context     Manage contexts
+  image       Manage images
+  manifest    Manage Docker image manifests and manifest lists
+  network     Manage networks
+  node        Manage Swarm nodes
+  plugin      Manage plugins
+  scan*       Docker Scan (Docker Inc., v0.8.0)
+  secret      Manage Docker secrets
+  service     Manage services
+  stack       Manage Docker stacks
+  swarm       Manage Swarm
+  system      Manage Docker
+  trust       Manage trust on Docker images
+  volume      Manage volumes
+
+Commands:
+  attach      Attach local standard input, output, and error streams to a running container
+  build       Build an image from a Dockerfile
+  commit      Create a new image from a container's changes
+  cp          Copy files/folders between a container and the local filesystem
+  create      Create a new container
+  diff        Inspect changes to files or directories on a container's filesystem
+  events      Get real time events from the server
+  exec        Run a command in a running container
+  export      Export a container's filesystem as a tar archive
+  history     Show the history of an image
+  images      List images
+  import      Import the contents from a tarball to create a filesystem image
+  info        Display system-wide information
+  inspect     Return low-level information on Docker objects
+  kill        Kill one or more running containers
+  load        Load an image from a tar archive or STDIN
+  login       Log in to a Docker registry
+  logout      Log out from a Docker registry
+  logs        Fetch the logs of a container
+  pause       Pause all processes within one or more containers
+  port        List port mappings or a specific mapping for the container
+  ps          List containers
+  pull        Pull an image or a repository from a registry
+  push        Push an image or a repository to a registry
+  rename      Rename a container
+  restart     Restart one or more containers
+  rm          Remove one or more containers
+  rmi         Remove one or more images
+  run         Run a command in a new container
+  save        Save one or more images to a tar archive (streamed to STDOUT by default)
+  search      Search the Docker Hub for images
+  start       Start one or more stopped containers
+  stats       Display a live stream of container(s) resource usage statistics
+  stop        Stop one or more running containers
+  tag         Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
+  top         Display the running processes of a container
+  unpause     Unpause all processes within one or more containers
+  update      Update configuration of one or more containers
+  version     Show the Docker version information
+  wait        Block until one or more containers stop, then print their exit codes
+
+Run 'docker COMMAND --help' for more information on a command.
+
+To get more help with docker, check out our guides at https://docs.docker.com/go/guides/
+```
+
+Comando **docker version** executado:
 
 ```
 atbta@ANDRE:~$ docker version
@@ -42,7 +134,11 @@ Server: Docker Engine - Community
  docker-init:
   Version:          0.19.0
   GitCommit:        de40ad0
+```
 
+Comando **docker info** executado:
+
+```
 atbta@ANDRE:~$ docker info
 Client:
  Context:    default
@@ -97,20 +193,19 @@ Server:
  Insecure Registries:
   127.0.0.0/8
  Live Restore Enabled: false
-
 ```
 
 
 
 ## Executando um container com ubuntu
 
-Vamos executar um container com **ubuntu** que imprima na tela **"Hello!"** usando o comando **echo**
+Vamos executar um container com **ubuntu** que imprima na tela **Hello** usando o comand  `echo`. O comando `docker run` é a criação do processo no SO Host, a criação do container.
 
 ```bash
 docker run ubuntu /bin/echo Hello!
 ```
 
-Como não tem imagem do ubuntu na máquina local ela é baixada antes. Nesse comando, após o docker baixar o ubuntu é acessado o binário /bin/echo e executado para o argumento "Hello!"
+Como não tem imagem do **ubuntu** na máquina local ela é baixada antes. Nesse comando, após o docker baixar o **ubuntu** é acessado o binário `/bin/echo` dele e executado para o argumento "**Hello!**"
 
 ```
 atbta@ANDRE:~$ docker run ubuntu /bin/echo Hello!
@@ -122,12 +217,16 @@ Status: Downloaded newer image for ubuntu:latest
 Hello!
 ```
 
+Onde aparece `16ec32c2132b: Pull complete` é uma camada. Neste caso há somente uma, mas quanto mais complexa a imagem mais camadas terá.
+
+As camadas no docker podem ser reaproveitadas em outras imagens: se a gente instalar o debian, ele não vai baixar tudo do debian mas vai usar o que for possível do ubuntu que já baixou antes, em outras palavras, uma ou outra camada do ubuntu. 
+
 Podemos usar o comando docker images para verificar que o passo de baixar a imagem do ubuntu no comando anterior foi executado:
 
 ```bash
 atbta@ANDRE:~$ docker images
 REPOSITORY   TAG       IMAGE ID       CREATED       SIZE
-ubuntu       latest    1318b700e415   13 days ago   72.8MB
+ubuntu       latest    1318b700e415   2 weeks ago   72.8MB
 ```
 
 É baixado do ubuntu somente a parte que é necessária para executar o comando solicitado pela aplicação.
@@ -145,16 +244,16 @@ Um novo container com ubuntu foi criado, o comando bash echo foi executado e seu
 docker ps -a
 ```
 
-O parametro **-a** mostra os containers que terminaram a sua execução:
+O parametro `-a` mostra os containers que terminaram a sua execução:
 
 ```
 atbta@ANDRE:~$ docker ps -a
-CONTAINER ID   IMAGE     COMMAND                CREATED          STATUS                      PORTS     NAMES
-bb8dc1c7cbc3   ubuntu    "/bin/echo Hello! 2"   39 seconds ago   Exited (0) 38 seconds ago             goofy_kilby
-d8691994ec21   ubuntu    "/bin/echo Hello!"     3 minutes ago    Exited (0) 3 minutes ago              trusting_hofstadt
+CONTAINER ID   IMAGE     COMMAND                CREATED              STATUS                          PORTS     NAMES
+9744097d52ba   ubuntu    "/bin/echo Hello! 2"   54 seconds ago       Exited (0) 53 seconds ago                 quirky_gauss
+45e9e8ab8805   ubuntu    "/bin/echo Hello!"     About a minute ago   Exited (0) About a minute ago             musing_allen
 ```
 
-
+Um container é volátil e não se deve salvar dados nele. Após o término de sua execução ele é destruido.
 
 
 
@@ -295,7 +394,7 @@ Options:
 
 
 
-Agora vamos usar os parâmetros `-i` e `-t` 
+Em breve vamos usar os parâmetros `-i` e `-t` 
 
 ```
   -i, --interactive                    Keep STDIN open even if not attached
@@ -304,11 +403,122 @@ Agora vamos usar os parâmetros `-i` e `-t`
 
 
 
-Agora vamos criar um novo container com ubuntu e verificar parametros de rede para que possamos entender como funciona a interação do SO host com o SO do container. 
-
 ## Container com terminal interativo de ubuntu 
 
+Agora vamos criar um novo container com ubuntu e verificar parametros de rede para que possamos perceber um pouco como funciona a interação do SO hospedeiro com o SO do container. 
 
+Vamos começar executando o `docker run`
+
+```
+docker run -i -t ubuntu /bin/bash
+```
+
+Agora podemos executar comandos dentro do container **ubuntu**
+
+```
+atbta@ANDRE:~$ docker run -i -t ubuntu /bin/bash
+root@9298f861ed56:/#
+```
+
+Digitamos o comando `uname -a` e verificamos que realmente estamos dentro do container ao ver que o sistema é diferente do SO hospedeiro
+
+```
+root@9298f861ed56:/# uname -a
+Linux 9298f861ed56 5.10.16.3-microsoft-standard-WSL2 #1 SMP Fri Apr 2 22:23:49 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+```
+
+Vamos instalar as ferramentas para verificar a rede **apt update** e depois **apt install net-tools**:
+
+```
+root@9298f861ed56:/# apt update
+Get:1 http://security.ubuntu.com/ubuntu focal-security InRelease [114 kB]
+Get:2 http://archive.ubuntu.com/ubuntu focal InRelease [265 kB]
+Get:3 http://security.ubuntu.com/ubuntu focal-security/universe amd64 Packages [787 kB]
+Get:4 http://archive.ubuntu.com/ubuntu focal-updates InRelease [114 kB]
+Get:5 http://archive.ubuntu.com/ubuntu focal-backports InRelease [101 kB]
+Get:6 http://archive.ubuntu.com/ubuntu focal/restricted amd64 Packages [33.4 kB]
+Get:7 http://archive.ubuntu.com/ubuntu focal/multiverse amd64 Packages [177 kB]
+Get:8 http://archive.ubuntu.com/ubuntu focal/universe amd64 Packages [11.3 MB]
+Get:9 http://security.ubuntu.com/ubuntu focal-security/main amd64 Packages [990 kB]
+Get:10 http://archive.ubuntu.com/ubuntu focal/main amd64 Packages [1275 kB]
+Get:11 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 Packages [1056 kB]
+Get:12 http://archive.ubuntu.com/ubuntu focal-updates/multiverse amd64 Packages [39.0 kB]
+Get:13 http://archive.ubuntu.com/ubuntu focal-updates/restricted amd64 Packages [478 kB]
+Get:14 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 Packages [1427 kB]
+Get:15 http://archive.ubuntu.com/ubuntu focal-backports/main amd64 Packages [2668 B]
+Get:16 http://archive.ubuntu.com/ubuntu focal-backports/universe amd64 Packages [6319 B]
+Get:17 http://security.ubuntu.com/ubuntu focal-security/multiverse amd64 Packages [30.6 kB]
+Get:18 http://security.ubuntu.com/ubuntu focal-security/restricted amd64 Packages [432 kB]
+Fetched 18.7 MB in 8s (2322 kB/s)
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+3 packages can be upgraded. Run 'apt list --upgradable' to see them.
+```
+
+```
+root@9298f861ed56:/# apt install net-tools
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following NEW packages will be installed:
+  net-tools
+0 upgraded, 1 newly installed, 0 to remove and 3 not upgraded.
+Need to get 196 kB of archives.
+After this operation, 864 kB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu focal/main amd64 net-tools amd64 1.60+git20180626.aebd88e-1ubuntu1 [196 kB]
+Fetched 196 kB in 2s (126 kB/s)
+debconf: delaying package configuration, since apt-utils is not installed
+Selecting previously unselected package net-tools.
+(Reading database ... 4127 files and directories currently installed.)
+Preparing to unpack .../net-tools_1.60+git20180626.aebd88e-1ubuntu1_amd64.deb ...
+Unpacking net-tools (1.60+git20180626.aebd88e-1ubuntu1) ...
+Setting up net-tools (1.60+git20180626.aebd88e-1ubuntu1) ...
+```
+
+Podemos verificar a versão da distro:
+
+```
+root@9298f861ed56:/# cat /etc/lsb-release
+DISTRIB_ID=Ubuntu
+DISTRIB_RELEASE=20.04
+DISTRIB_CODENAME=focal
+DISTRIB_DESCRIPTION="Ubuntu 20.04.2 LTS"
+```
+
+E também verificar o IP do SO do container
+
+```
+root@9298f861ed56:/# ifconfig eth0
+eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 172.17.0.2  netmask 255.255.0.0  broadcast 172.17.255.255
+        ether 02:42:ac:11:00:02  txqueuelen 0  (Ethernet)
+        RX packets 13282  bytes 19591210 (19.5 MB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 4275  bytes 235322 (235.3 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+```
+
+A faixa de IP é **172.17.0.0** com máscara **255.255.0.0** que é bem diferente do SO hospedeiro. Quando vamos criar uma interface de rede para o container usamos o IP do host somente. Não utilizamos IP de container porque a cada **docker run** o IP vai mudar. Então quando se trabalha com portainer não se utiliza o IP do container mas sim o IP do SO hospedeiro. Os DNSs que um cliente vê não vai ter o IP do container, mas sim do SO hospedeiro.
+
+Podemos verificar que o id do container ubuntu que criamos está listado em /etc/host: **9298f861ed56**
+
+```
+root@9298f861ed56:/# cat /etc/hosts
+127.0.0.1       localhost
+::1     localhost ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+172.17.0.2      9298f861ed56
+```
+
+Como pedimos interatividade ao executar o **docker run** se sairmos do bash a execução é terminada. E assim termina o ciclo de execução do container. 
+
+Em um possível deploy automático com containers não posso fazer algo dentro do container para resolver qualquer problema, ou até mesmo realizar alguma configuração. Toda parametrização de deploy automático deve ser feita na imagem. 
+
+Assim como um **programa** em execução é um **processo**, também uma **imagem docker** em execução é um **container**.
 
 ## Criando um container com nginx 
 
