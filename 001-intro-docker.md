@@ -1,231 +1,6 @@
 # Tutorial hands-on docker
 
-## Comandos utilizados neste tutorial
-
-```
-docker images
-
-docker ps
-
-docker ps -a
-
-docker run ubuntu /bin/echo Hello!
-
-docker run -i -t ubuntu /bin/bash
-
-docker run -it --name app_nginx ubuntu
-
-docker rm "ad96e9bfb220ab5f5b86bfe8a34f3b1c0b80ebaa8b8cd838150b10b487ad5119"
-
-docker commit 43576c70d511 ubuntu/app_nginx
-
-docker run -it --rm -p 8080:80 --name app_nginx ubuntu/app_nginx
-
-docker run -it --rm -p 8080:80 --name app_nginx ubuntu/app_nginx /bin/bash
-
-docker run -d -p 8080:80 --name app_nginx ubuntu/nginx /usr/sbin/nginx -g "daemon off;"
-```
-
-
-
-## Comandos Muito Básicos
-
-Alguns comandos básicos para verificar dados da versão e informações da instalação do docker
-
-```
-docker
-docker vesion # versão da engine
-docker info   # informações da instalação do docker
-```
-
-Comando **docker** executado:
-
-```
-atbta@ANDRE:~/tutoriais$ docker
-
-Usage:  docker [OPTIONS] COMMAND
-
-A self-sufficient runtime for containers
-
-Options:
-      --config string      Location of client config files (default "/home/atbta/.docker")
-  -c, --context string     Name of the context to use to connect to the daemon (overrides DOCKER_HOST env var and default context set with "docker
-                           context use")
-  -D, --debug              Enable debug mode
-  -H, --host list          Daemon socket(s) to connect to
-  -l, --log-level string   Set the logging level ("debug"|"info"|"warn"|"error"|"fatal") (default "info")
-      --tls                Use TLS; implied by --tlsverify
-      --tlscacert string   Trust certs signed only by this CA (default "/home/atbta/.docker/ca.pem")
-      --tlscert string     Path to TLS certificate file (default "/home/atbta/.docker/cert.pem")
-      --tlskey string      Path to TLS key file (default "/home/atbta/.docker/key.pem")
-      --tlsverify          Use TLS and verify the remote
-  -v, --version            Print version information and quit
-
-Management Commands:
-  builder     Manage builds
-  buildx*     Build with BuildKit (Docker Inc., v0.5.1-docker)
-  compose*    Docker Compose (Docker Inc., v2.0.0-beta.6)
-  config      Manage Docker configs
-  container   Manage containers
-  context     Manage contexts
-  image       Manage images
-  manifest    Manage Docker image manifests and manifest lists
-  network     Manage networks
-  node        Manage Swarm nodes
-  plugin      Manage plugins
-  scan*       Docker Scan (Docker Inc., v0.8.0)
-  secret      Manage Docker secrets
-  service     Manage services
-  stack       Manage Docker stacks
-  swarm       Manage Swarm
-  system      Manage Docker
-  trust       Manage trust on Docker images
-  volume      Manage volumes
-
-Commands:
-  attach      Attach local standard input, output, and error streams to a running container
-  build       Build an image from a Dockerfile
-  commit      Create a new image from a container's changes
-  cp          Copy files/folders between a container and the local filesystem
-  create      Create a new container
-  diff        Inspect changes to files or directories on a container's filesystem
-  events      Get real time events from the server
-  exec        Run a command in a running container
-  export      Export a container's filesystem as a tar archive
-  history     Show the history of an image
-  images      List images
-  import      Import the contents from a tarball to create a filesystem image
-  info        Display system-wide information
-  inspect     Return low-level information on Docker objects
-  kill        Kill one or more running containers
-  load        Load an image from a tar archive or STDIN
-  login       Log in to a Docker registry
-  logout      Log out from a Docker registry
-  logs        Fetch the logs of a container
-  pause       Pause all processes within one or more containers
-  port        List port mappings or a specific mapping for the container
-  ps          List containers
-  pull        Pull an image or a repository from a registry
-  push        Push an image or a repository to a registry
-  rename      Rename a container
-  restart     Restart one or more containers
-  rm          Remove one or more containers
-  rmi         Remove one or more images
-  run         Run a command in a new container
-  save        Save one or more images to a tar archive (streamed to STDOUT by default)
-  search      Search the Docker Hub for images
-  start       Start one or more stopped containers
-  stats       Display a live stream of container(s) resource usage statistics
-  stop        Stop one or more running containers
-  tag         Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
-  top         Display the running processes of a container
-  unpause     Unpause all processes within one or more containers
-  update      Update configuration of one or more containers
-  version     Show the Docker version information
-  wait        Block until one or more containers stop, then print their exit codes
-
-Run 'docker COMMAND --help' for more information on a command.
-
-To get more help with docker, check out our guides at https://docs.docker.com/go/guides/
-```
-
-Comando **docker version** executado:
-
-```
-atbta@ANDRE:~$ docker version
-Client: Docker Engine - Community
- Cloud integration: 1.0.17
- Version:           20.10.7
- API version:       1.41
- Go version:        go1.13.15
- Git commit:        f0df350
- Built:             Wed Jun  2 11:56:47 2021
- OS/Arch:           linux/amd64
- Context:           default
- Experimental:      true
-
-Server: Docker Engine - Community
- Engine:
-  Version:          20.10.7
-  API version:      1.41 (minimum version 1.12)
-  Go version:       go1.13.15
-  Git commit:       b0f5bc3
-  Built:            Wed Jun  2 11:54:58 2021
-  OS/Arch:          linux/amd64
-  Experimental:     false
- containerd:
-  Version:          1.4.6
-  GitCommit:        d71fcd7d8303cbf684402823e425e9dd2e99285d
- runc:
-  Version:          1.0.0-rc95
-  GitCommit:        b9ee9c6314599f1b4a7f497e1f1f856fe433d3b7
- docker-init:
-  Version:          0.19.0
-  GitCommit:        de40ad0
-```
-
-Comando **docker info** executado:
-
-```
-atbta@ANDRE:~$ docker info
-Client:
- Context:    default
- Debug Mode: false
- Plugins:
-  buildx: Build with BuildKit (Docker Inc., v0.5.1-docker)
-  compose: Docker Compose (Docker Inc., v2.0.0-beta.6)
-  scan: Docker Scan (Docker Inc., v0.8.0)
-
-Server:
- Containers: 0
-  Running: 0
-  Paused: 0
-  Stopped: 0
- Images: 0
- Server Version: 20.10.7
- Storage Driver: overlay2
-  Backing Filesystem: extfs
-  Supports d_type: true
-  Native Overlay Diff: true
-  userxattr: false
- Logging Driver: json-file
- Cgroup Driver: cgroupfs
- Cgroup Version: 1
- Plugins:
-  Volume: local
-  Network: bridge host ipvlan macvlan null overlay
-  Log: awslogs fluentd gcplogs gelf journald json-file local logentries splunk syslog
- Swarm: inactive
- Runtimes: io.containerd.runc.v2 io.containerd.runtime.v1.linux runc
- Default Runtime: runc
- Init Binary: docker-init
- containerd version: d71fcd7d8303cbf684402823e425e9dd2e99285d
- runc version: b9ee9c6314599f1b4a7f497e1f1f856fe433d3b7
- init version: de40ad0
- Security Options:
-  seccomp
-   Profile: default
- Kernel Version: 5.10.16.3-microsoft-standard-WSL2
- Operating System: Docker Desktop
- OSType: linux
- Architecture: x86_64
- CPUs: 8
- Total Memory: 4.524GiB
- Name: docker-desktop
- ID: NB66:KDLB:THLW:HMEB:LMPS:LO24:Z432:3JIU:CEHV:UPDT:26YR:CCFQ
- Docker Root Dir: /var/lib/docker
- Debug Mode: false
- Registry: https://index.docker.io/v1/
- Labels:
- Experimental: false
- Insecure Registries:
-  127.0.0.0/8
- Live Restore Enabled: false
-```
-
-
-
-## INÍCIO - Executando um container com ubuntu
+## Executando um container com ubuntu
 
 Vamos executar um container com **ubuntu** que imprima na tela **Hello** usando o comand  **`echo`**. O comando **`docker run`** é a criação do processo no SO Host, a criação do container.
 
@@ -520,7 +295,7 @@ ff02::2 ip6-allrouters
 
 Como pedimos interatividade ao executar o **docker run** se sairmos do bash a execução é terminada. E assim termina o ciclo de execução do container. 
 
-Assim como um **programa** em execução é um **processo**, também uma **imagem docker** em execução é um **container**.
+Assim como um **programa** em execução é um **processo**, de forma semelhante uma **imagem docker** em execução é um **container**.
 
 ```
 root@107fb53948b8:/# exit
@@ -729,19 +504,17 @@ e3cb1eee0ce0   ubuntu    "/bin/echo Hello! 2"   2 hours ago   Exited (0) 2 hours
 3814c7c99d86   ubuntu    "/bin/echo Hello!"     2 hours ago   Exited (0) 2 hours ago             gracious_saha
 ```
 
-Então vamos executar com o `docker run` a mesma imagem  `ubuntu/app_nginx` o mesmo comando mas agora sem interatividade (removeremos o `--rm`e adicionamos o `-p` para indicar background), além disso vamos pedir para executar o nginx informando o binário /usr/sbin/nginx:
+Então vamos executar com o `docker run` a mesma imagem  `ubuntu/app_nginx` o mesmo comando mas agora sem interatividade (removeremos o `--rm`e adicionamos; adicionamos `-d` para executar o container em background e imprimir seu id), além disso vamos pedir para executar o nginx informando o binário /usr/sbin/nginx com os padrâmetros `-g "daemon off."`:
 
 `docker run -d -p 8080:80 --name app_nginx ubuntu/nginx /usr/sbin/nginx -g "daemon off;"` 
 
 ```
 atbta@ANDRE:~$ docker run -d -p 8080:80 --name app_nginx ubuntu/app_nginx /usr/sbin/nginx -g "daemon off;"
 94330c076b26dfabf3d2af7990e138a09a18ca76a6231420583ed95a12e4e573
-
+atbta@ANDRE:~$
 ```
 
-
-
-
+Podemos verificar que o container está executando em background com `docker ps`
 
 ```
 atbta@ANDRE:~$ docker ps
@@ -749,94 +522,86 @@ CONTAINER ID IMAGE            COMMAND                CREATE  STATUS  PORTS      
 94330c076b26 ubuntu/app_nginx "/usr/sbin/nginx -g …" 34 seco Up 32 s 0.0.0.0:8080->80/tcp, :::8080->80/tcpapp_nginx
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Para remover o cache
+Quando eu quiser executar um comando no terminal desse container posso usar `docker exec`
 
 ```
-atbta@ANDRE:~/tutoriais$ docker system prune -a
-WARNING! This will remove:
-  - all stopped containers
-  - all networks not used by at least one container
-  - all images without at least one container associated to them
-  - all build cache
+docker exec -it app_nginx /bin/bash
+```
 
-Are you sure you want to continue? [y/N] y
-Deleted Containers:
-99a1b3256fbf69905d80524db3d9010c09a8cdca8e92c59eaa389e3865a084b2
-dc32d576c873fb0440d5c10989ae3ca0a5328b3d687326a1260dfdd49b7cd3b3
+Então conseguimos acessar o bash do container e verificar o log do servidor nginx
 
-Deleted build cache objects:
-m6t4f00zjwkzwr73xcruspipe
-on3p3ujpqc3gahfqiu8q9eond
-ynywiphp76xf208awvt6j6df5
-i7ogm3vgrrnvk9nhakxfdfsti
-n497ex8l8fg0495f83i8c1u90
-wl9u0q9dvtkqsb8ojg0c6plit
-rr6w539d8hwuq0jsozw41dq6n
-lej2u4uqzvtewqb8t2b5srb86
-rvsihgdnmdexxqggtpq60ihkn
-1tpazyxkfou673pdyt6ck74ev
-tqmx7rltf0y0vevswy06sm2rl
-md5dxiholy5jvcvlkge0xnwc9
-5agmb69gtjxty7ttiq748028o
-uvf61lug4isz01h0aftrw9ow7
-iuc8pcwdxm7wmo1xmg15kq3y9
-ckcv4ud2vm6g1xuir4kcpyt9m
-1xxm2o4v77ryao1a81i7uz9kh
-tnmi2tvkzvr3we32hs3ww3d0t
-q22pcexlu2m6v22ls3hymrcb7
-jvyr32cp7bfk4fhjrqav7rwa2
-rveu5eecrbsmcs09529vfw3os
-czntwjy6ix9lvray1n161au59
-2csbuec2x2rmiw7nx22o4nlst
-ks1n4cvczp2jp59h1e4oaxoj1
-iksnk07zp435movalxhq0dpc4
-w95drez58jdg7rrlhvcsipyzz
-8918qpw5pfib5o4litr4n5u6s
-rspt048el74dmet5im7fcjx1c
-pm1bysb0lvjvv9zynm2q6w0g3
-i01zzh6ag3erh11lqq0e7ib47
-7l77m6bexkdse72hjj5ia60qe
-loy3t285bivqk5h01j7snzuyp
-znsnbpe177dev28gf5m0geawx
-v2u9zmfmzpxbnrdv5k2zsnzev
-kngwzivjyw685i8kpzi1y8ajv
-f7wgh1ko08g753t7lesbsnb5j
-vh7o7c6lm8ek7b6p80cb063fn
-t66vfdm5qz4nd838txystekkx
-3qksr97l2ezz6gx7ctc1j03x1
-v2j0wks13lq73anpgyxh60kkw
-chg0l7cyixnpidmyhevjpbviw
-fyaafp249tnejjr8jxqvyzfk4
-f4pzik6bncbi3rzgtjyyth4ud
-hs94xla2d2cw9jcoaesmly4jd
-fuo5otb1sjdpaqget23wala1p
-tyk0k94z9wf3fftpvq8tafm6n
-94mrtb9yhv1i32847mwu6zsoy
-xo38p3e11yvbcyu018o7azgcb
-z0rj55l2fchvcqoxe8vprm6zx
-rjiwxhwjpp115ggzlvcxfm5mq
-s1kpwj6cq09uzqfy46ptys9hx
-y1zgcpd05twsti5n46q58wtcq
-4b12sf5892tj2a7ooede0tpxl
-6g8k5oualcuccrwcmbq9krofn
-3imdx8qtcgbxdc3nfk1ot7lxo
-sfjpf4job7ah2sztzlfanb1y9
-v0wx40m7zs2cuochzgmmzauqw
+```
+atbta@ANDRE:~$ docker exec -it app_nginx /bin/bash
+root@94330c076b26:/# uname -a
+Linux 94330c076b26 5.10.16.3-microsoft-standard-WSL2 #1 SMP Fri Apr 2 22:23:49 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+root@94330c076b26:/# tail -f /var/log/nginx/access.log
+127.0.0.1 - - [10/Aug/2021:18:16:18 -0400] "GET / HTTP/1.1" 200 612 "-" "curl/7.68.0"
 
-Total reclaimed space: 490.5MB
+```
+
+Conseguimos pausar e continuar a execução do container com `docker stop id` e `docker start id`
+
+```
+atbta@ANDRE:~$ docker stop 94330c076b26
+94330c076b26
+atbta@ANDRE:~$ docker start 94330c076b26
+94330c076b26
+```
+
+Não é possível excluir um container em execução, inclusive se está em background. Mas podemos forçar
+
+```
+atbta@ANDRE:~$ docker ps
+CONTAINER ID   IMAGE              COMMAND                  CREATED          STATUS          PORTS                                   NAMES
+94330c076b26   ubuntu/app_nginx   "/usr/sbin/nginx -g …"   40 minutes ago   Up 21 minutes   0.0.0.0:8080->80/tcp, :::8080->80/tcp   app_nginx
+atbta@ANDRE:~$ docker rm app_nginx
+Error response from daemon: You cannot remove a running container 94330c076b26dfabf3d2af7990e138a09a18ca76a6231420583ed95a12e4e573. Stop the container before attempting removal or force remove
+atbta@ANDRE:~$ docker rm -f app_nginx
+app_nginx
+atbta@ANDRE:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+atbta@ANDRE:~$
+atbta@ANDRE:~$ docker ps -a
+CONTAINER ID   IMAGE     COMMAND                CREATED       STATUS                   PORTS     NAMES
+107fb53948b8   ubuntu    "/bin/bash"            3 hours ago   Exited (0) 3 hours ago             modest_cray
+e3cb1eee0ce0   ubuntu    "/bin/echo Hello! 2"   3 hours ago   Exited (0) 3 hours ago             competent_hawking
+3814c7c99d86   ubuntu    "/bin/echo Hello!"     3 hours ago   Exited (0) 3 hours ago             gracious_saha
+
+```
+
+
+
+
+
+
+
+
+
+
+
+## Comandos utilizados neste tutorial
+
+```
+docker images
+
+docker ps
+
+docker ps -a
+
+docker run ubuntu /bin/echo Hello!
+
+docker run -i -t ubuntu /bin/bash
+
+docker run -it --name app_nginx ubuntu
+
+docker rm "ad96e9bfb220ab5f5b86bfe8a34f3b1c0b80ebaa8b8cd838150b10b487ad5119"
+
+docker commit 43576c70d511 ubuntu/app_nginx
+
+docker run -it --rm -p 8080:80 --name app_nginx ubuntu/app_nginx
+
+docker run -it --rm -p 8080:80 --name app_nginx ubuntu/app_nginx /bin/bash
+
+docker run -d -p 8080:80 --name app_nginx ubuntu/nginx /usr/sbin/nginx -g "daemon off;"
 ```
 
