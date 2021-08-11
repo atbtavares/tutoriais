@@ -560,7 +560,7 @@ atbta@ANDRE:~$
 
 Caso tenha o container tenha parado por algum motivo como: 1) o servidor do docker ter sido desligado ou ter terminado ou 2) você teclou ctrl+c para encerrar a sessão, ou ainda 3) foi executado exit no bash. Nesse caso o container terá sido destruído.
 
-No trecho abaixo estamos nessas circunstancias e ao tentar fazer novamente o comando para iniciar o container teremos um erro. 
+No trecho abaixo estamos nessas circunstancias e ao tentar fazer novamente o comando para iniciar o container teremos o seguinte erro. 
 
 ```
 atbta@ANDRE:~$ docker run -it --name app_nginx ubuntu
@@ -574,23 +574,21 @@ Para resolver vamos apagar esse container então iniciar um novo onde repetiremo
 docker rm "df964faea9a137edcb0b30b851fc2b16ccf271b68dd44acecd9ba5683aeae98c"
 ```
 
-Isso cria uma imagem com base no que tinha no container anterior. Posteriormente quando trabalharmos mais com criação de imagens, será apresentado melhores formas
-
 ```
-
+atbta@ANDRE:~$ docker rm "df964faea9a137edcb0b30b851fc2b16ccf271b68dd44acecd9ba5683aeae98c"
+df964faea9a137edcb0b30b851fc2b16ccf271b68dd44acecd9ba5683aeae98c
 atbta@ANDRE:~$ docker ps
 CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
-
 atbta@ANDRE:~$ docker ps -a
-CONTAINER ID   IMAGE     COMMAND                CREATED        STATUS                      PORTS     NAMES
-ad96e9bfb220   ubuntu    "bash"                 20 hours ago   Exited (255) 2 hours ago              app_nginx
-d1d2bbebd819   ubuntu    "/bin/bash"            21 hours ago   Exited (100) 20 hours ago             determined_ptolemy
-bb8dc1c7cbc3   ubuntu    "/bin/echo Hello! 2"   21 hours ago   Exited (0) 21 hours ago               goofy_kilby
-d8691994ec21   ubuntu    "/bin/echo Hello!"     21 hours ago   Exited (0) 21 hours ago               trusting_hofstadter
+CONTAINER ID   IMAGE     COMMAND                CREATED          STATUS                   PORTS  NAMES
+107fb53948b8   ubuntu    "/bin/bash"            14 minutes ago   Exited (0) 6 minutes ago        modest_cray
+e3cb1eee0ce0   ubuntu    "/bin/echo Hello! 2"   17 minutes ago   Exited (0) 17 minutes ago       competent_hawking
+3814c7c99d86   ubuntu    "/bin/echo Hello!"     19 minutes ago   Exited (0) 19 minutes ago       gracious_saha
+```
 
-atbta@ANDRE:~$ docker rm "ad96e9bfb220ab5f5b86bfe8a34f3b1c0b80ebaa8b8cd838150b10b487ad5119"
-ad96e9bfb220ab5f5b86bfe8a34f3b1c0b80ebaa8b8cd838150b10b487ad5119
+Então criamos um novo container
 
+```
 atbta@ANDRE:~$ docker run -it --name app_nginx ubuntu
 root@264d8f062aca:/#
 ```
@@ -598,7 +596,7 @@ root@264d8f062aca:/#
 Agora podemos executar o comando `apt update && apt install -y nginx curl` dentro do container ubuntu/app_nginx
 
 ```
-root@43576c70d511:/# apt update && apt install -y nginx curl
+root@7cdee1f4cf18:/# apt update && apt install -y nginx curl
 ....
 Setting up libcurl4:amd64 (7.68.0-1ubuntu2.6) ...
 Setting up curl (7.68.0-1ubuntu2.6) ...
@@ -608,16 +606,14 @@ Updating certificates in /etc/ssl/certs...
 0 added, 0 removed; done.
 Running hooks in /etc/ca-certificates/update.d...
 done.
-root@43576c70d511:/# 
+root@7cdee1f4cf18:/# 
 ```
-
-
 
 Iniciamos o servidor e testamos com o `curl`
 
 ```
-root@43576c70d511:/# nginx
-root@43576c70d511:/# curl http://localhost
+root@7cdee1f4cf18:/# nginx
+root@7cdee1f4cf18:/# curl http://localhost
 <!DOCTYPE html>
 <html>
 <head>
@@ -643,64 +639,66 @@ Commercial support is available at
 <p><em>Thank you for using nginx.</em></p>
 </body>
 </html>
-root@43576c70d511:/#
-root@43576c70d511:/# exit
+root@7cdee1f4cf18:/#
+root@7cdee1f4cf18:/# exit
 exit
 ```
 
-Tudo OK. Após sair da máquina vamos executar `docker commit id ubuntu/app_nginx`para salvar o estado atual da máquina
+Tudo OK. Após sair da máquina vamos executar `docker commit id ubuntu/app_nginx`para salvar o estado atual da máquina em uma imagem
 
 ```
-atbta@ANDRE:~$ docker commit 43576c70d511 ubunto/app_nginx
-sha256:3e3fcf1072d5c2ba75b0afc0760c613e680634631b8fdcd9f9e79eb8da7fbd2f
+atbta@ANDRE:~$ docker commit 7cdee1f4cf18 ubuntu/app_nginx
+1b2fae00a95c460a50628c7d068aa34a4d0920543e08547dff93f6b834d6b17a
 atbta@ANDRE:~$
 ```
+
+
 
 Verificamos que a imagem criada é um pouco maior devido as instalações que foram realizadas.
 
 ```
 atbta@ANDRE:~$ docker images
 REPOSITORY         TAG       IMAGE ID       CREATED          SIZE
-ubunto/app_nginx   latest    3e3fcf1072d5   48 seconds ago   173MB
+ubuntu/app_nginx   latest    1b2fae00a95c   26 seconds ago   173MB
 ubuntu             latest    1318b700e415   2 weeks ago      72.8MB
 ```
 
- Usar  o `docker commit` não é recomendado para salvar uma imagem. Em outro momento veremos a forma mais adequada para realizar essa operação.
+ **Usar  o `docker commit` não é recomendado para salvar uma imagem**. Em outro momento veremos a forma mais adequada para realizar essa operação.
 
-Agora vamos criar um container a partir da imagem criada `ubunto/app_nginx`
+Agora vamos criar um container a partir da imagem criada `ubuntu/app_nginx`
 
 Dessa vez no `docker run` utilizaremos a flag `-rm` indica que o container deve ser removido após execução do processo; Já a flag `-p`, indica que há mapeamento entre ambientes interno e externo através entre de portas do container e do host.
 
 ```
-docker run -it -rm -p 8080:80 --name app_nginx ubunto/app_nginx
+docker run -it --rm -p 8080:80 --name app_nginx ubuntu/app_nginx
 ```
 
 O resultado é um conflito porque o nome `app_nginx`deve ser único já que é um id de container
 
 ```
-atbta@ANDRE:~$ docker run -it --rm -p 8080:80 --name app_nginx ubunto/app_nginx
-docker: Error response from daemon: Conflict. The container name "/app_nginx" is already in use by container "43576c70d5115271b4db2847758295983b78b59353467ad66661fe9b875525f6". You have to remove (or rename) that container to be able to reuse that name.
+atbta@ANDRE:~$ docker run -it --rm -p 8080:80 --name app_nginx ubuntu/app_nginx
+docker: Error response from daemon: Conflict. The container name "/app_nginx" is already in use by container "7cdee1f4cf187f35009f9b0e02b1e535db189136634df432787679abbde04ee9". You have to remove (or rename) that container to be able to reuse that name.
 See 'docker run --help'.
 ```
 
 Nesse caso podemos remover com `docker rm app_nginx` para executar o comando `docker run -it --rm -p 8080:80 --name app_nginx ubunto/app_nginx`novamente
 
 ```
-atbta@ANDRE:~$ docker rm "43576c70d5115271b4db2847758295983b78b59353467ad66661fe9b875525f6"
-43576c70d5115271b4db2847758295983b78b59353467ad66661fe9b875525f6
+atbta@ANDRE:~$ docker rm "7cdee1f4cf187f35009f9b0e02b1e535db189136634df432787679abbde04ee9"
+7cdee1f4cf187f35009f9b0e02b1e535db189136634df432787679abbde04ee9
 ```
 
-Vamos adicionar mais um parâmetro para que possamos utilizar o bash, além disso após iniciar o container também vamos rodar o serviço do nginx com o comando linux `service nginx start`
+Vamos repedir o comando **docker run** adicionando mais um parâmetro para que possamos utilizar o bash, além disso após iniciar o container também vamos rodar o serviço do nginx com o comando linux `service nginx start`
 
 ```
-docker run -it -rm -p 8080:80 --name app_nginx ubunto/app_nginx /bin/bash
+docker run -it --rm -p 8080:80 --name app_nginx ubuntu/app_nginx /bin/bash
 ```
 
 ```
-atbta@ANDRE:~$ docker run -it --rm -p 8080:80 --name app_nginx ubunto/app_nginx /bin/bash
-root@0e1dafd5a6e1:/# service nginx start
+atbta@ANDRE:~$ docker run -it --rm -p 8080:80 --name app_nginx ubuntu/app_nginx /bin/bash
+root@f4e8687fc6af:/# service nginx start
  * Starting nginx nginx                                                                                     [ OK ]
- root@0e1dafd5a6e1:/#
+ root@f4e8687fc6af:/#
 ```
 
 Se você for em um navegador do SO host, então conseguirá acessar http://localhost:8080
@@ -710,7 +708,6 @@ Assim tornamos acessível o nginx executado dentro do container pelo navegador d
 Vemos mais detalhes com o comando `netstat`
 
 ```
-
 atbta@ANDRE:~/tutoriais$ sudo netstat -tlnp
 [sudo] password for atbta:
 Active Internet connections (only servers)
@@ -720,37 +717,37 @@ tcp        0      0 127.0.0.1:6011          0.0.0.0:*               LISTEN      
 tcp6       0      0 :::8080                 :::*                    LISTEN      -
 ```
 
-Quando usamos no `docker run` a opção `--rm` e terminamos o container, não sobra nenhum rastro da execução dele no `docker ps -a`. Além disso, o nginx também não fica mais rodando
+Quando usamos no `docker run` a opção `--rm` e terminamos o container, não sobra nenhum rastro da execução dele no `docker ps -a`, também é claro que o nginx também não está mais sendo executado. Você pode verificar no navegador do host o link http://localhost:8080
 
 ```
-atbta@ANDRE:~$ docker run -it --rm -p 8080:80 --name app_nginx ubunto/app_nginx /bin/bash
-root@0e1dafd5a6e1:/# service nginx start
- * Starting nginx nginx                                                                                                                                [ OK ]
-root@0e1dafd5a6e1:/# exit
+root@f4e8687fc6af:/# exit
 exit
+atbta@ANDRE:~$ docker ps -a
+CONTAINER ID   IMAGE     COMMAND                CREATED       STATUS                   PORTS     NAMES
+107fb53948b8   ubuntu    "/bin/bash"            2 hours ago   Exited (0) 2 hours ago             modest_cray
+e3cb1eee0ce0   ubuntu    "/bin/echo Hello! 2"   2 hours ago   Exited (0) 2 hours ago             competent_hawking
+3814c7c99d86   ubuntu    "/bin/echo Hello!"     2 hours ago   Exited (0) 2 hours ago             gracious_saha
 ```
 
-Então vamos executar o mesmo comando mas agora sem interatividade:
+Então vamos executar com o `docker run` a mesma imagem  `ubuntu/app_nginx` o mesmo comando mas agora sem interatividade (removeremos o `--rm`e adicionamos o `-p` para indicar background), além disso vamos pedir para executar o nginx informando o binário /usr/sbin/nginx:
 
-`docker run -d -p 8080:80 --name app_nginx ubunto/nginx /usr/sbin/nginx -g "daemon off;"` 
+`docker run -d -p 8080:80 --name app_nginx ubuntu/nginx /usr/sbin/nginx -g "daemon off;"` 
 
 ```
-atbta@ANDRE:~$ docker run -d -p 8080:80 --name app_nginx ubuntu/nginx /usr/sbin/nginx -g "daemon off;"
-Unable to find image 'ubuntu/nginx:latest' locally
-latest: Pulling from ubuntu/nginx
-ea301a4e9092: Pull complete
-5a55ed894fa3: Pull complete
-269462602d82: Pull complete
-3c16aaaa1a67: Pull complete
-d7ccd4b3ea3b: Pull complete
-bb2c10db954a: Pull complete
-Digest: sha256:ccdfd11a0710b0a7c16a2d4c5ed342830d56dd9553a93b0485df57aeb0b0e85b
-Status: Downloaded newer image for ubuntu/nginx:latest
-d2663f379b9a4d8c5d7e02bb2d81555ee0e82092227a4c05f4cdeed642452695
+atbta@ANDRE:~$ docker run -d -p 8080:80 --name app_nginx ubuntu/app_nginx /usr/sbin/nginx -g "daemon off;"
+94330c076b26dfabf3d2af7990e138a09a18ca76a6231420583ed95a12e4e573
 
 ```
 
 
+
+
+
+```
+atbta@ANDRE:~$ docker ps
+CONTAINER ID IMAGE            COMMAND                CREATE  STATUS  PORTS                                NAMES
+94330c076b26 ubuntu/app_nginx "/usr/sbin/nginx -g …" 34 seco Up 32 s 0.0.0.0:8080->80/tcp, :::8080->80/tcpapp_nginx
+```
 
 
 
