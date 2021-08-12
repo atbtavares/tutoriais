@@ -1,4 +1,4 @@
-# Tutorial hands-on docker
+# Tutorial hands-on docker (1/10)
 
 ## Executando um container com ubuntu
 
@@ -548,32 +548,24 @@ atbta@ANDRE:~$ docker start 94330c076b26
 94330c076b26
 ```
 
-Não é possível excluir um container em execução, inclusive se está em background. Mas podemos forçar
+Normalmente não é possível excluir um container em execução com o `docker rm`, inclusive se está em background. Mas podemos forçar com o atributo `-f`
 
 ```
 atbta@ANDRE:~$ docker ps
 CONTAINER ID   IMAGE              COMMAND                  CREATED          STATUS          PORTS                                   NAMES
 94330c076b26   ubuntu/app_nginx   "/usr/sbin/nginx -g …"   40 minutes ago   Up 21 minutes   0.0.0.0:8080->80/tcp, :::8080->80/tcp   app_nginx
+
 atbta@ANDRE:~$ docker rm app_nginx
 Error response from daemon: You cannot remove a running container 94330c076b26dfabf3d2af7990e138a09a18ca76a6231420583ed95a12e4e573. Stop the container before attempting removal or force remove
+
 atbta@ANDRE:~$ docker rm -f app_nginx
 app_nginx
+
 atbta@ANDRE:~$ docker ps
 CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 atbta@ANDRE:~$
-atbta@ANDRE:~$ docker ps -a
-CONTAINER ID   IMAGE     COMMAND                CREATED       STATUS                   PORTS     NAMES
-107fb53948b8   ubuntu    "/bin/bash"            3 hours ago   Exited (0) 3 hours ago             modest_cray
-e3cb1eee0ce0   ubuntu    "/bin/echo Hello! 2"   3 hours ago   Exited (0) 3 hours ago             competent_hawking
-3814c7c99d86   ubuntu    "/bin/echo Hello!"     3 hours ago   Exited (0) 3 hours ago             gracious_saha
 
 ```
-
-
-
-
-
-
 
 
 
