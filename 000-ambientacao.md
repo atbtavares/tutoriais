@@ -2,13 +2,42 @@
 
 Essa sessão é basicamente um overview simples e rápido. 
 
-As outras páginas do tutorial são bem práticas e você já deve ter instalado o docker.
+Requisitos:
 
-A medida que for lendo, execute os comandos no seu computador
+* As outras páginas do tutorial são bem práticas e você já deve ter instalado o docker;
+* A medida que for lendo, execute os comandos no seu computador.
+
+A principal função do docker é a virtualização do ambiente da aplicação.
+
+De forma bem direta: você "programa" o que a sua aplicação precisa para ser executada, definindo seus pacotes, configurações de servidor de aplicação, dependências de hardware e software. 
+
+Você não vai precisar configurar novamente o ambiente de forma manual. 
+
+Uma vez parametrizado o quanto de disco, processamento e memória, bem como versão/configuração do sistema operacional e/ou servidor de aplicação, você consegue replicar facilmente em outro sistema operacional. 
+
+Alguns benefícios que você pode conseguir são:
+
+|                        DESENVOLVEDOR                         |                        INFRAESTRUTURA                        | CLIENTE                                                      |
+| :----------------------------------------------------------: | :----------------------------------------------------------: | ------------------------------------------------------------ |
+| Configuração rápida do ambiente de desenvolvimento. É o fim dos projetos herdados em que há caça as configurações que o desenvolvedor fez. | Espaço de configuração separado por aplicação. Um ajuste no jboss ou no linux não afeta outras aplicações | Acesso a mais recursos de máquina se necessário              |
+| Pode baixar da internet um ambiente completo já configurado e validado pelos fornecedores do software |       Simplificar a realização até de deploys manuais        | Cobrança mais precisa por recursos de harware utilizados, por sistema |
+| Ambientes iguais de desenvolvimento, homologação, produção, testes, stages e treinamento - em relação a software | Ambientes mais fáceis de configurar: desenvolvimento, homologação, produção, testes, stages e treinamento - em relação ao hardware e a rede |                                                              |
+| Maior controle nos requisitos da aplicação (hardware e software) | Uma aplicação que tem situação onde consome mais recursos que o previsto não afetará outras aplicações |                                                              |
+
+Aceito sugestões de melhoria nos itens via chat do Teams (para Andre Tavares de Brito)
+
+Nas aulas 1/10 e 2/10, você aprenderá 
+
+* Criar um container com ubuntu
+* Criar um container com ubuntu e um servidor nginx
+* Criar uma imagem com a configuração desejada
+* Criar um roteiro automatizado (Dockerfile) para configuração de uma imagem
+* Mover uma imagem ou container de uma máquina para outra
+* Baixar uma imagem pronta do Dockerhub
 
 [TOC]
 
-Você pode ir direto as outras aulas [aqui](https://github.com/atbtavares/tutoriais/blob/main/001-intro-docker.md)
+Você pode ir direto a próxima aula [aqui](https://github.com/atbtavares/tutoriais/blob/main/001-intro-docker.md)
 
 ## Comandos Muito Básicos
 
@@ -24,10 +53,10 @@ Em sistemas operacionais, um **processo** é um programa em execução. Já no d
 
 Existem vários comandos para o docker, mas estes são os principais que veremos ao longo da primeira e da segunda aula: 
 
-| `docker run`  | `docker ps`   | `docker build` | `docker pull` |
-| ------------- | ------------- | -------------- | ------------- |
-| `docker push` | `docker logs` | `docker stats` | `docker load` |
-| `docker save` | `docker stop` | `docker start` |               |
+| **`docker run`**  | **`docker ps`**   | **`docker build`** | **`docker pull`** |
+| ----------------- | ----------------- | ------------------ | ----------------- |
+| **`docker push`** | **`docker logs`** | **`docker stats`** | **`docker load`** |
+| **`docker save`** | **`docker stop`** | **`docker start`** |                   |
 
 Você pode ver mais detalhes executando o comando **`docker`** no terminal:
 
@@ -155,7 +184,7 @@ Server: Docker Engine - Community
   GitCommit:        de40ad0
 ```
 
-Comando **`docker info`** executado traz informações do número de containers no docker, como também número de imagens e mais:
+Comando **`docker info`** traz informações do número de containers no docker, como também número de imagens e mais:
 
 ```
 atbta@ANDRE:~$ docker info
@@ -218,7 +247,7 @@ Server:
 
 ## Verificando alguns comandos de ajuda
 
-O comando `docker ps --help` mostra outros parâmetros e funções do `docker ps` . Cada um dos para `docker stats` e outros terão seus respectivos helps
+O comando `docker ps --help` mostra outros parâmetros e funções do `docker ps` . Para cada par (como `docker ps`ou ainda `docker stats`) haverá um parâmetro `--help` que traz mais informações do seu uso.
 
 ```
 atbta@ANDRE:~$ docker ps --help
@@ -239,7 +268,7 @@ Options:
 
 ```
 
-O docker run também tem uma lista enorme de parâmetros e suas funções
+O `docker run` também tem uma lista de parâmetros e suas funções:
 
 ```
 atbta@ANDRE:~$ docker run --help
@@ -351,13 +380,17 @@ Options:
   -w, --workdir string                 Working directory inside the container
 ```
 
-Por enquanto é só e isso basta para uma leve ambientação.
+Por enquanto é só e isso basta para uma ambientação rápida.
 
 Próxima aula [001-intro-docker.md](https://github.com/atbtavares/tutoriais/blob/main/001-intro-docker.md)
 
-## Para remover  cache 
 
-Remove todos os **containers parados**, **redes não usadas**, **imagens** sem container associados e todo o **cache de build**.
+
+Caso você tenha pouco espaço em disco, já existam muitas imagens carregadas e você quer deixar o ambiente mais enxuto você pode limpar o `docker`
+
+## Para limpar o ambiente
+
+Você pode **remover** todos os **containers parados**, **redes não usadas**, **imagens** sem container associados e todo o **cache de build** com o `system prune -a`. Do inglês, *prune*, significa: podar, suprimir, aparar ou desbastar.
 
 ```
 atbta@ANDRE:~/tutoriais$ docker system prune -a
@@ -379,12 +412,6 @@ ynywiphp76xf208awvt6j6df5
 i7ogm3vgrrnvk9nhakxfdfsti
 n497ex8l8fg0495f83i8c1u90
 wl9u0q9dvtkqsb8ojg0c6plit
-rr6w539d8hwuq0jsozw41dq6n
-lej2u4uqzvtewqb8t2b5srb86
-rvsihgdnmdexxqggtpq60ihkn
-1tpazyxkfou673pdyt6ck74ev
-tqmx7rltf0y0vevswy06sm2rl
-md5dxiholy5jvcvlkge0xnwc9
 5agmb69gtjxty7ttiq748028o
 uvf61lug4isz01h0aftrw9ow7
 iuc8pcwdxm7wmo1xmg15kq3y9
@@ -393,38 +420,6 @@ ckcv4ud2vm6g1xuir4kcpyt9m
 tnmi2tvkzvr3we32hs3ww3d0t
 q22pcexlu2m6v22ls3hymrcb7
 jvyr32cp7bfk4fhjrqav7rwa2
-rveu5eecrbsmcs09529vfw3os
-czntwjy6ix9lvray1n161au59
-2csbuec2x2rmiw7nx22o4nlst
-ks1n4cvczp2jp59h1e4oaxoj1
-iksnk07zp435movalxhq0dpc4
-w95drez58jdg7rrlhvcsipyzz
-8918qpw5pfib5o4litr4n5u6s
-rspt048el74dmet5im7fcjx1c
-pm1bysb0lvjvv9zynm2q6w0g3
-i01zzh6ag3erh11lqq0e7ib47
-7l77m6bexkdse72hjj5ia60qe
-loy3t285bivqk5h01j7snzuyp
-znsnbpe177dev28gf5m0geawx
-v2u9zmfmzpxbnrdv5k2zsnzev
-kngwzivjyw685i8kpzi1y8ajv
-f7wgh1ko08g753t7lesbsnb5j
-vh7o7c6lm8ek7b6p80cb063fn
-t66vfdm5qz4nd838txystekkx
-3qksr97l2ezz6gx7ctc1j03x1
-v2j0wks13lq73anpgyxh60kkw
-chg0l7cyixnpidmyhevjpbviw
-fyaafp249tnejjr8jxqvyzfk4
-f4pzik6bncbi3rzgtjyyth4ud
-hs94xla2d2cw9jcoaesmly4jd
-fuo5otb1sjdpaqget23wala1p
-tyk0k94z9wf3fftpvq8tafm6n
-94mrtb9yhv1i32847mwu6zsoy
-xo38p3e11yvbcyu018o7azgcb
-z0rj55l2fchvcqoxe8vprm6zx
-rjiwxhwjpp115ggzlvcxfm5mq
-s1kpwj6cq09uzqfy46ptys9hx
-y1zgcpd05twsti5n46q58wtcq
 4b12sf5892tj2a7ooede0tpxl
 6g8k5oualcuccrwcmbq9krofn
 3imdx8qtcgbxdc3nfk1ot7lxo
