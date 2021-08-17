@@ -1,16 +1,35 @@
 # Tutorial hands-on docker (0/10)
 
+Essa sessão é basicamente um overview simples e rápido. 
+
+As outras páginas do tutorail são bem práticas e você já deve ter instalado o docker.
+
+A medida que for lendo, execute os comandos no seu computador
+
+[TOC]
+
+Você pode ir direto as outras aulas [aqui](https://github.com/atbtavares/tutoriais/blob/main/001-intro-docker.md)
+
 ## Comandos Muito Básicos
 
 Alguns comandos básicos para verificar dados da versão e informações da instalação do docker
 
 ```
-docker
+docker        # como usar
 docker vesion # versão da engine
 docker info   # informações da instalação do docker
 ```
 
-Comando **docker** executado:
+Em sistemas operacionais, um **processo** é um programa em execução. Já no docker, um **container** é uma imagem em execução. 
+
+Existem vários comandos para o docker, mas estes são os principais que veremos ao longo da primeira e da segunda aula: 
+
+| `docker run`  | `docker ps`   | `docker build` | `docker pull` |
+| ------------- | ------------- | -------------- | ------------- |
+| `docker push` | `docker logs` | `docker stats` | `docker load` |
+| `docker save` | `docker stop` | `docker start` |               |
+
+Você pode ver mais detalhes executando o comando **`docker`** no terminal:
 
 ```
 atbta@ANDRE:~/tutoriais$ docker
@@ -101,7 +120,7 @@ Run 'docker COMMAND --help' for more information on a command.
 To get more help with docker, check out our guides at https://docs.docker.com/go/guides/
 ```
 
-Comando **docker version** executado:
+Comando **`docker version`** executado:
 
 ```
 atbta@ANDRE:~$ docker version
@@ -136,7 +155,7 @@ Server: Docker Engine - Community
   GitCommit:        de40ad0
 ```
 
-Comando **docker info** executado:
+Comando **`docker info`** executado traz informações do número de containers no docker, como também número de imagens e mais:
 
 ```
 atbta@ANDRE:~$ docker info
@@ -199,7 +218,7 @@ Server:
 
 ## Verificando alguns comandos de ajuda
 
-O comando `docker ps --help` mostra outros parâmetros e funções do `docker ps` 
+O comando `docker ps --help` mostra outros parâmetros e funções do `docker ps` . Cada um dos para `docker stats` e outros terão seus respectivos helps
 
 ```
 atbta@ANDRE:~$ docker ps --help
@@ -332,7 +351,9 @@ Options:
   -w, --workdir string                 Working directory inside the container
 ```
 
+Por enquanto é só e isso basta para uma leve ambientação.
 
+Próxima aula [001-intro-docker.md](https://github.com/atbtavares/tutoriais/blob/main/001-intro-docker.md)
 
 ## Para remover  cache 
 
