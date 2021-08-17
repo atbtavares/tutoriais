@@ -24,7 +24,7 @@ Alguns benefícios que você pode conseguir são:
 | Ambientes iguais de desenvolvimento, homologação, produção, testes, stages e treinamento - em relação a software | Ambientes mais fáceis de configurar: desenvolvimento, homologação, produção, testes, stages e treinamento - em relação ao hardware e a rede |                                                              |
 | Maior controle nos requisitos da aplicação (hardware e software) | Uma aplicação que tem situação onde consome mais recursos que o previsto não afetará outras aplicações |                                                              |
 
-Aceito sugestões de melhoria nos itens via chat do Teams (para Andre Tavares de Brito)
+Aceito sugestões de melhoria nos itens acima via chat do Teams (para Andre Tavares de Brito). Toda sugestão é bem vinda o tempo todo.
 
 Nas aulas 1/10 e 2/10, você aprenderá 
 
