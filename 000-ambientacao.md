@@ -2,7 +2,7 @@
 
 Essa sessão é basicamente um overview simples e rápido. 
 
-As outras páginas do tutorail são bem práticas e você já deve ter instalado o docker.
+As outras páginas do tutorial são bem práticas e você já deve ter instalado o docker.
 
 A medida que for lendo, execute os comandos no seu computador
 
