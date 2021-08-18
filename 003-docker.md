@@ -1,4 +1,4 @@
-### Tutorial hands-on docker (3/10)  - Logs
+# Tutorial hands-on docker (3/10)  - Logs e Docker Hub
 
 ## O que vimos na aula passada
 
