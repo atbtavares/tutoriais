@@ -1,4 +1,4 @@
-# Tutorial hands-on docker (3/10)  - Logs e Docker Hub
+# Tutorial hands-on docker (3/10)  - Logs e Imagens no Docker Hub
 
 ## O que vimos na aula passada
 
@@ -440,9 +440,66 @@ jboss/wildfly   latest    a6ba50806be9   7 weeks ago         724MB
 
 
 
+No Docker Hub https://hub.docker.com/  é possível gerenciar suas imagens em um repositório externo e online, consegue linkar com github e bitbucket, webhooks para gerenciar o repositório (principalmente pra workflow de deploy) e etc. Tem algumas funcionalidades pagas como o scanner de vulnerabilidades que a imagem pode gerar para meus containers.
 
+Para enviar suas imagens para o dockerhub, use o `docker login`. Se não tiver login pode criar no site. Em seguida pode fazer `docker push` com o nome da imagem contendo seu nome de usuário, fica assim: nome-do-usuario/nome-da-imagem. Exemplo: `docker push atbtavares/vue_app`
 
+```
+# fazemos login com as credencias do docker hub
 
+atbta@ANDRE:~/tutoriais$ docker login
+Authenticating with existing credentials...
+Login Succeeded
+
+# listamos as imagens para escolher uma: app_vue
+
+atbta@ANDRE:~/tutoriais$ docker images
+REPOSITORY      TAG       IMAGE ID       CREATED       SIZE
+vue-img         latest    76c61ebd1ae7   4 days ago    134MB
+app_vue         latest    99bdd56b66a2   5 days ago    134MB
+app             latest    1317ff3c370f   5 days ago    162MB
+jboss/wildfly   latest    a6ba50806be9   8 weeks ago   724MB
+
+# ajustamos titulo do repositório local que deve constar o nome de usuario do dockerhub.com
+
+atbta@ANDRE:~/tutoriais$ docker tag  app_vue atbtavares/app_vue
+
+# verificamos que a alteração está ok com docker images
+
+atbta@ANDRE:~/tutoriais$ docker images
+REPOSITORY           TAG       IMAGE ID       CREATED       SIZE
+vue-img              latest    76c61ebd1ae7   4 days ago    134MB
+atbtavares/app_vue   latest    99bdd56b66a2   5 days ago    134MB
+app_vue              latest    99bdd56b66a2   5 days ago    134MB
+app                  latest    1317ff3c370f   5 days ago    162MB
+jboss/wildfly        latest    a6ba50806be9   8 weeks ago   724MB
+
+# enviamos a imagem para o docker hub com docker push
+
+atbta@ANDRE:~/tutoriais$ docker push atbtavares/app_vue
+Using default tag: latest
+The push refers to repository [docker.io/atbtavares/app_vue]
+342a2f4c8c7c: Pushed
+faf16d74d5d4: Pushed
+e3135447ca3e: Mounted from library/nginx
+b85734705991: Mounted from library/nginx
+988d9a3509bb: Mounted from library/nginx
+59b01b87c9e7: Mounted from library/nginx
+7c0b223167b9: Mounted from library/nginx
+814bff734324: Mounted from library/nginx
+latest: digest: sha256:0b8e21282fb18c3847d604bba8a6958fd922afb39b3634926d79b18da2258677 size: 1987
+
+```
+
+Você pode enviar outras versões (caso tenham feito alterações)  para o dockerhub, utilizando o `docker push atbtavares/app_vue:v1`, sempre utilizando a tag desejada após o `:`
+
+Você também consegue criar um repositório pela web, no dockerhub.com
+
+## Usando uma imagem oficial do tomcat
+
+Nessa sessão vamos usar a imagem do (tomcat)[https://hub.docker.com/_/tomcat] no docker hub
+
+Seguiremos o passo
 
 ## Comandos utilizados neste tutorial
 
