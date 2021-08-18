@@ -440,7 +440,7 @@ jboss/wildfly   latest    a6ba50806be9   7 weeks ago         724MB
 
 
 
-No Docker Hub https://hub.docker.com/  é possível gerenciar suas imagens em um repositório externo e online, consegue linkar com github e bitbucket, webhooks para gerenciar o repositório (principalmente pra workflow de deploy) e etc. Tem algumas funcionalidades pagas como o scanner de vulnerabilidades que a imagem pode gerar para meus containers.
+No Docker Hub https://hub.docker.com/  é possível gerenciar suas imagens em um repositório externo e online, consegue linkar com github e bitbucket, usar webhooks para gerenciar o repositório (principalmente pra workflow de deploy) e etc. 
 
 Para enviar suas imagens para o dockerhub, use o `docker login`. Se não tiver login pode criar no site. Em seguida pode fazer `docker push` com o nome da imagem contendo seu nome de usuário, fica assim: nome-do-usuario/nome-da-imagem. Exemplo: `docker push atbtavares/vue_app`
 
@@ -451,6 +451,7 @@ atbta@ANDRE:~/tutoriais$ docker login
 Authenticating with existing credentials...
 Login Succeeded
 
+
 # listamos as imagens para escolher uma: app_vue
 
 atbta@ANDRE:~/tutoriais$ docker images
@@ -460,9 +461,11 @@ app_vue         latest    99bdd56b66a2   5 days ago    134MB
 app             latest    1317ff3c370f   5 days ago    162MB
 jboss/wildfly   latest    a6ba50806be9   8 weeks ago   724MB
 
+
 # ajustamos titulo do repositório local que deve constar o nome de usuario do dockerhub.com
 
 atbta@ANDRE:~/tutoriais$ docker tag  app_vue atbtavares/app_vue
+
 
 # verificamos que a alteração está ok com docker images
 
@@ -473,6 +476,7 @@ atbtavares/app_vue   latest    99bdd56b66a2   5 days ago    134MB
 app_vue              latest    99bdd56b66a2   5 days ago    134MB
 app                  latest    1317ff3c370f   5 days ago    162MB
 jboss/wildfly        latest    a6ba50806be9   8 weeks ago   724MB
+
 
 # enviamos a imagem para o docker hub com docker push
 
@@ -497,9 +501,57 @@ Você também consegue criar um repositório pela web, no dockerhub.com
 
 ## Usando uma imagem oficial do tomcat
 
-Nessa sessão vamos usar a imagem do (tomcat)[https://hub.docker.com/_/tomcat] no docker hub
+Nessa sessão vamos usar a imagem do [tomcat](https://hub.docker.com/_/tomcat) no docker hub
 
-Seguiremos o passo
+Uma vez que ela estiver local, faremos modificações e subiremos no seu repositório do dockerhub.com
+
+Primeiramente precisamos entender como o criador da imagem disponibilizou as funcionalidades nela, para então criar o Dockerfile conforme sua necessidade.
+
+No how-to do link tomcat, você verá a imagem já entrega variáveis de ambiente como `${CATALINA_HOME}`, `${CATALINA_BASE}`, `${JRE_HOME}` entre outras onde consta a localização padrão de componentes. Isso facilita ao montar um dockerfile já que eu não preciso escrever exatamente o caminho longo (o tempo todo no docker file), mas sim preciso conhecer a variável de ambiente e usá-la de forma adequada no Dockerfile.
+
+Cada imagem tem suas nuances e é importante conhecer quais são, pelo Docker Hub da imagem. Neste caso do tomcat, conforme consta no know-to, o ENTRYPOINT sempre será o catalina home.
+
+Essa é a sessão *How to use this image* do link acima do tomcat:
+
+```
+How to use this image.
+
+Note: as of docker-library/tomcat#181, the upstream-provided (example) webapps are not enabled by default, per upstream's security recommendations, but are still available under the webapps.dist folder within the image to make them easier to re-enable.
+
+Run the default Tomcat server (CMD ["catalina.sh", "run"]):
+
+$ docker run -it --rm tomcat:9.0
+
+You can test it by visiting http://container-ip:8080 in a browser or, if you need access outside the host, on port 8888:
+
+$ docker run -it --rm -p 8888:8080 tomcat:9.0
+
+You can then go to http://localhost:8888 or http://host-ip:8888 in a browser (noting that it will return a 404 since there are no webapps loaded by default).
+
+The default Tomcat environment in the image is:
+
+CATALINA_BASE:   /usr/local/tomcat
+CATALINA_HOME:   /usr/local/tomcat
+CATALINA_TMPDIR: /usr/local/tomcat/temp
+JRE_HOME:        /usr
+CLASSPATH:       /usr/local/tomcat/bin/bootstrap.jar:/usr/local/tomcat/bin/tomcat-juli.jar
+
+The configuration files are available in /usr/local/tomcat/conf/. By default, no user is included in the "manager-gui" role required to operate the "/manager/html" web application. If you wish to use this app, you must define such a user in tomcat-users.xml.
+```
+
+Webapps não estão habilitados por padrão devido questões de segurança, mas ainda estão disponíveis na pasta `webapps.dist`dentro da imagem para que seja fácil reabilitar.
+
+Para executar o container, o Dockerfile da imagem deve conter o comando `CMD ["catalina.sh", "run"], e então fazemos:
+
+```
+$ docker run -it --rm tomcat:9.0
+```
+
+O local de teste é http://localhost:8888
+
+Os arquivos de configuração estão disponíveis em /usr/local/tomacat/conf. Por padrão, nenhum usuário é incluido no role "manager-gui" necessário para operar o "/manater/html" da aplicação web. Se você deseja usar esse app, deve definir esse usuário em `tomcat-users.xml`.
+
+
 
 ## Comandos utilizados neste tutorial
 
