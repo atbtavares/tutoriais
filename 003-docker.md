@@ -1,4 +1,4 @@
-# Tutorial hands-on docker (2/10)  - Logs
+# Tutorial hands-on docker (3/10)  - Logs
 
 ## O que vimos na aula passada
 
@@ -36,6 +36,8 @@ EXPOSE 80
 ENTRYPOINT ["/usr/sbin/nginx", "-g", "daemon off;"]
 
 ```
+
+
 
 Fazemos então o build e verificamos que há duas novas linhas na saída do `docker build`
 
