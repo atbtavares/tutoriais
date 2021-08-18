@@ -32,7 +32,7 @@ Nas aulas 1/10 e 2/10, você aprenderá
 * Criar um container com ubuntu e um servidor nginx
 * Criar uma imagem com a configuração desejada
 * Criar um roteiro automatizado (Dockerfile) para configuração de uma imagem
-* Mover uma imagem ou container de uma máquina para outra
+* Mover uma imagem ou container de uma máquina para outra (uma imagem com ubuntu, nginx e uma aplicação em vue.js)
 * Baixar uma imagem pronta do Dockerhub
 
 [TOC]

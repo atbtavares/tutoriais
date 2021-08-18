@@ -1,4 +1,4 @@
-# Tutorial hands-on docker (3/10)  - Logs
+### Tutorial hands-on docker (3/10)  - Logs
 
 ## O que vimos na aula passada
 
@@ -12,7 +12,7 @@
 
 ## INÍCIO - Trabalhando com Logs
 
-Vamos mapear o arquivo de log do nginx para o `docker logs`para não ter que entrar no container toda vez que eu precisar acessar o log.
+Vamos mapear o arquivo de log do nginx para o `docker logs` para não ter que entrar no container toda vez que eu precisar acessar o log.
 
  A saída padrão e de erro do ubuntu devem apontar para os arquivos de log do nginx. No Dockerfile vamos incluir a linha `RUN ls -sf /dev/stdout /var/log/nginx/acess.log` e também a linha `RUN ls -sf /dev/stderr /var/log/nginx/error.log`.
 
@@ -181,6 +181,41 @@ atbta@ANDRE:~/ubuntu-app$
 
 
 ```
+
+
+
+Você pode subir o container com `docker run -p 8080:80 --name vue app_vue`
+
+```
+atbta@ANDRE:~/ubuntu-app$ docker run -p 8080:80 --name vue app_vue
+/docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
+/docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
+10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf
+10-listen-on-ipv6-by-default.sh: info: /etc/nginx/conf.d/default.conf differs from the packaged version
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
+/docker-entrypoint.sh: Configuration complete; ready for start up
+2021/08/18 16:39:29 [notice] 1#1: using the "epoll" event method
+2021/08/18 16:39:29 [notice] 1#1: nginx/1.21.1
+2021/08/18 16:39:29 [notice] 1#1: built by gcc 8.3.0 (Debian 8.3.0-6)
+2021/08/18 16:39:29 [notice] 1#1: OS: Linux 5.10.16.3-microsoft-standard-WSL2
+2021/08/18 16:39:29 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2021/08/18 16:39:29 [notice] 1#1: start worker processes
+2021/08/18 16:39:29 [notice] 1#1: start worker process 30
+2021/08/18 16:39:29 [notice] 1#1: start worker process 31
+2021/08/18 16:39:29 [notice] 1#1: start worker process 32
+2021/08/18 16:39:29 [notice] 1#1: start worker process 33
+2021/08/18 16:39:29 [notice] 1#1: start worker process 34
+2021/08/18 16:39:29 [notice] 1#1: start worker process 35
+2021/08/18 16:39:29 [notice] 1#1: start worker process 36
+2021/08/18 16:39:29 [notice] 1#1: start worker process 37
+
+```
+
+Teste a aplicação vue no navegador (http://localhost:8080)[http://localhost:8080]
+
+![image-20210818124137654](C:\Users\atbta\AppData\Roaming\Typora\typora-user-images\image-20210818124137654.png)
 
 
 
