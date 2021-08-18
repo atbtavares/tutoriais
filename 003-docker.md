@@ -114,9 +114,9 @@ atbta@ANDRE:~/ubuntu-app-nginx$ docker logs app_nginx -f
 
 Em um multi-stage build a construção da imagem acontece em etapas.
 
-Exemplo do Vue
+Como temos um exemplo de aplicação do Vue:  [ubuntu-app.zip](C:\Users\atbta\Downloads\ubuntu-app.zip) 
 
-
+Após subir a aplicação vamos estudar o Dockerfile dela que tem multi-stage builds
 
 ```
 atbta@ANDRE:~/ubuntu-app$ docker build -t app_vue .
@@ -132,31 +132,12 @@ atbta@ANDRE:~/ubuntu-app$ docker build -t app_vue .
  => [production 1/3] FROM docker.io/library/nginx:latest@sha256:8f335768880da6baf72b70c701002b45f4932a 22.3s
  => => resolve docker.io/library/nginx:latest@sha256:8f335768880da6baf72b70c701002b45f4932acae8d574ded 0.1s
  => => sha256:8f335768880da6baf72b70c701002b45f4932acae8d574dedfddaf967fc3ac90 1.86kB / 1.86kB         0.0s
- => => sha256:3f13b4376446cf92b0cb9a5c46ba75d57c41f627c4edb8b635fa47386ea29e20 1.57kB / 1.57kB         0.0s
- => => sha256:08b152afcfae220e9709f00767054b824361c742ea03a9fe936271ba520a0a4b 7.73kB / 7.73kB         0.0s
- => => sha256:33847f680f63fb1b343a9fc782e267b5abdbdb50d65d4b9bd2a136291d67cf75 27.15MB / 27.15MB       14.4s
- => => sha256:dbb907d5159dcb993c532a46d2edaff7a72670d093d518e38e6aaf8115103f73 26.60MB / 26.60MB       9.9s
- => => sha256:8a268f30c42a7c778c9c9497d043dfac6143281918cb9337f20335d4f11e1937 601B / 601B             11.0s
- => => sha256:b10cf527a02df3ba9f85346ee04f59f920d9ec341a7ca688339c8ae1f8ea978c 893B / 893B             11.5s
- => => sha256:1f41b2f2bf94740d411c54b48be7f5e9dfbe14f29d1a5cf64f39150d75f39740 1.39kB / 1.39kB         13.2s
- => => sha256:c90b090c213b9e42d7982715b827803437fcbf4337f4672fead618c60cd36b84 665B / 665B             12.8s
- => => extracting sha256:33847f680f63fb1b343a9fc782e267b5abdbdb50d65d4b9bd2a136291d67cf75              4.3s
- => => extracting sha256:dbb907d5159dcb993c532a46d2edaff7a72670d093d518e38e6aaf8115103f73              1.5s
- => => extracting sha256:8a268f30c42a7c778c9c9497d043dfac6143281918cb9337f20335d4f11e1937              0.0s
- => => extracting sha256:b10cf527a02df3ba9f85346ee04f59f920d9ec341a7ca688339c8ae1f8ea978c              0.0s
  => => extracting sha256:c90b090c213b9e42d7982715b827803437fcbf4337f4672fead618c60cd36b84              0.0s
  => => extracting sha256:1f41b2f2bf94740d411c54b48be7f5e9dfbe14f29d1a5cf64f39150d75f39740              0.0s
  => [build 1/9] FROM docker.io/library/node:lts-alpine3.13@sha256:5746903d7170e131afeeb8e6422633424852 19.7s
  => => resolve docker.io/library/node:lts-alpine3.13@sha256:5746903d7170e131afeeb8e642263342485222c4e1 0.1s
  => => sha256:3f9ad66a016cb456125cb82c82b070e4ba4018b635bdb1926b8240aac3c9bdfd 1.16kB / 1.16kB         0.0s
  => => sha256:a0564746d270a1f5d74346d4769e4125217e273c3b39752a51376353b0486f61 6.53kB / 6.53kB         0.0s
- => => sha256:be041776d41473f040fb8b924aa86e51d972f719f11d7cfbcde03e854c29873b 36.38MB / 36.38MB       12.4s
- => => sha256:5746903d7170e131afeeb8e642263342485222c4e12113104e869523a50e0ffc 1.43kB / 1.43kB         0.0s
- => => sha256:540db60ca9383eac9e418f78490994d0af424aab7bf6d0e47ac8ed4e2e9bcbba 2.81MB / 2.81MB         1.8s
- => => sha256:7121a0c5ed3697d8aca8b0a5f13e54f1b625879204319b26a806df9323348aeb 2.36MB / 2.36MB         4.0s
- => => extracting sha256:540db60ca9383eac9e418f78490994d0af424aab7bf6d0e47ac8ed4e2e9bcbba              2.5s
- => => sha256:01167fb2fbb67ec936b91ed3a483cecdc82bdd9ba7404a99f3cf989fc9d534bc 281B / 281B             2.3s
- => => extracting sha256:be041776d41473f040fb8b924aa86e51d972f719f11d7cfbcde03e854c29873b              5.8s
  => => extracting sha256:7121a0c5ed3697d8aca8b0a5f13e54f1b625879204319b26a806df9323348aeb              0.2s
  => => extracting sha256:01167fb2fbb67ec936b91ed3a483cecdc82bdd9ba7404a99f3cf989fc9d534bc              0.0s
  => [internal] load build context                                                                      0.1s
@@ -181,8 +162,6 @@ atbta@ANDRE:~/ubuntu-app$
 
 
 ```
-
-
 
 Você pode subir o container com `docker run -p 8080:80 --name vue app_vue`
 
@@ -213,11 +192,49 @@ atbta@ANDRE:~/ubuntu-app$ docker run -p 8080:80 --name vue app_vue
 
 ```
 
-Teste a aplicação vue no navegador (http://localhost:8080)[http://localhost:8080]
+Teste a aplicação vue no navegador  do SO hospedeiro (http://localhost:8080)[http://localhost:8080]
 
 ![image-20210818124137654](C:\Users\atbta\AppData\Roaming\Typora\typora-user-images\image-20210818124137654.png)
 
+O Dockerfile contém:
 
+```
+01. FROM node:lts-alpine3.13 as build
+02. 
+03. RUN apk update
+04. RUN apk add yarn
+05. 
+06. WORKDIR /app
+07. 
+08. COPY package.json .
+09. COPY yarn.lock .
+10. COPY . .
+11. RUN yarn install
+12. RUN yarn build
+13. 
+14. FROM nginx:latest as production
+15. COPY --from=build /app/config/nginx/default.conf /etc/nginx/conf.d
+16. COPY --from=build /app/dist /usr/share/nginx/html
+17. EXPOSE 80
+18. CMD ["nginx", "-g", "daemon off;"]
+
+```
+
+Vamos explicar passo a passo cada ação realizada quando fazemos o `docker build`
+
+No Dockerfile, a primeira linha `FROM node:lts-alpine3.13 as build` usou o Alpine Linux como SO da imagem quando fizemos o `docker build`. A industria usa essa distro de linux para seus pacotes porque é muito leve e enxuta.
+
+Nas linhas 03 e 04, após ter baixado a imagem do alpine, foram realizados os comandos `apk update`e `apk add yarn`, para instalar o gerenciador de pacotes **yarn** no Alpine LInux, um requisito para para o vue.
+
+Na linha 06, com o comando `WORKDIR /app`,  foi criado um diretório **app** lá na raiz do sistema operacional: `/`
+
+Na parte dos comandos `COPY`, nas linhas 08 a 10, são copiados os arquivos `package.json`, `yarn.lock` e também os arquivos do diretório atual para `/app`.
+
+O `yarn install` e o `yarn build`, nas linhas 11 e 12, fizeram o build da  aplicação.
+
+Na linha 14 foi definido um apelido `production` para os próximos passos, com nginx: ` FROM nginx:latest as production`.
+
+Nas linha 15 a 18 é onde foi feita a cópia dos arquivos de configuração do estágio anterior, apelidado como `build`, para o nginx. Também os arquivos de configuração e arquivos padrão para o nginx, bem como exposição da porta e configuração para a execução do nginx
 
 ### Importação e exportaçao de containers
 
@@ -249,16 +266,14 @@ CONTAINER ID   IMAGE          COMMAND                   CREATED             STAT
 86d4d7bc24da   app_vue        "/docker-entrypoint.…"    About an hour ago   Exited (0) 8 minutes ago              vue
 ```
 
-
-
-
+Vamos transformar esse container em imagem com o `docker commit`:
 
 ```
 atbta@ANDRE:~/ubuntu-app$ docker commit 86d4d7bc24da vue-img
 sha256:76c61ebd1ae77c23332c2f8bfef6ef77ae825b5af6eaffc9e2aedf6c2528ca31
 ```
 
-
+Verificando se o container foi salvo:
 
 ```
 atbta@ANDRE:~/ubuntu-app$ docker images
@@ -268,9 +283,9 @@ app_vue      latest    99bdd56b66a2   About an hour ago   134MB
 app          latest    1317ff3c370f   6 hours ago         162MB
 ```
 
+Tudo OK.
 
-
-
+Para copiar em arquivo basta salvar a imagem com  `docker save` 
 
 ```
 atbta@ANDRE:~/ubuntu-app$ docker save vue-img > vue-img.tar
@@ -280,7 +295,7 @@ total 133M
 
 ```
 
-Para efeito de testes, vamos remover a imagem da qual criamos o arquivo vue-img.tar. Em seguida vamos carregar ela novamente para o docker através do arquivo. O melhor caso seria ter um cenário onde usar um docker em outra máquina já que isso seria mais próximo do real
+Para efeito de testes, vamos remover a imagem da qual criamos o arquivo vue-img.tar. Em seguida vamos carregar ela novamente para o docker através do arquivo. O melhor caso seria ter uma outra máquina com docker para levar o arquivo pra lá/
 
 ```
 atbta@ANDRE:~/ubuntu-app$ docker images
@@ -307,11 +322,10 @@ atbta@ANDRE:~/ubuntu-app$ docker images
 REPOSITORY   TAG       IMAGE ID       CREATED       SIZE
 app_vue      latest    99bdd56b66a2   2 hours ago   134MB
 app          latest    1317ff3c370f   7 hours ago   162MB
+
 atbta@ANDRE:~/ubuntu-app$ docker load < vue-img.tar
 4f6b3b27f72b: Loading layer [==================================================>]  11.26kB/11.26kB
 Loaded image: vue-img:latest
-
-
 ```
 
 
@@ -328,9 +342,7 @@ app          latest    1317ff3c370f   7 hours ago      162MB
 
 ### Usando o docker hub
 
-
-
-Posso pesquisar no Docker Hub https://hub.docker.com/ na linha de comandos com `docker search <nome>`
+Para obter uma imagem pronta, online, posso pesquisar no Docker Hub https://hub.docker.com/  ou na linha de comandos com `docker search <nome>`
 
 Exemplo
 
@@ -363,6 +375,10 @@ graze/php-alpine           Smallish php7 alpine image with some common …   12 
 phpdockerio/php7-cli       PHP 7 CLI base container image for PHPDocker…   2                    [OK]
 ccitest/php                CircleCI test images for PHP                    0                    [OK]
 ```
+
+Se tem um `[OK]` na coluna de oficial, foi o fornecedor que preparou a imagem, mas se tem na coluna AUTOMATED então significa que foi criado pela comunidade e que facilita criar processos de automação.
+
+No dockerhub.com você verá mais detalhes das imagens oficiais e da comunidade de forma mais simples e rápida.
 
 Verifique o `docker search --help`
 
