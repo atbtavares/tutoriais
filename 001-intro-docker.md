@@ -338,13 +338,15 @@ atbta@ANDRE:~$
 
 Caso tenha o container tenha parado por algum motivo como: 1) o servidor do docker ter sido desligado ou ter terminado ou 2) você teclou ctrl+c para encerrar a sessão, ou ainda 3) foi executado exit no bash. Nesse caso o container terá sido destruído.
 
-No trecho abaixo estamos nessas circunstancias e ao tentar fazer novamente o comando para iniciar o container teremos o seguinte erro. 
+Ao tentar fazer novamente o comando para iniciar o container teremos o seguinte erro. 
 
 ```
 atbta@ANDRE:~$ docker run -it --name app_nginx ubuntu
 docker: Error response from daemon: Conflict. The container name "/app_nginx" is already in use by container "df964faea9a137edcb0b30b851fc2b16ccf271b68dd44acecd9ba5683aeae98c". You have to remove (or rename) that container to be able to reuse that name.
 See 'docker run --help'.
 ```
+
+Isso aconteceu porque utilizamos o mesmo nome ```app_nginx```
 
 Para resolver vamos apagar esse container então iniciar um novo onde repetiremos as configurações, já que o antigo teve sua execução terminada. Lembre-se de que após executado o container perde a memória e o que foi instalado, bem como arquivos criados. 
 
