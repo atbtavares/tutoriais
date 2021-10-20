@@ -481,7 +481,7 @@ root@f4e8687fc6af:/# service nginx start
  root@f4e8687fc6af:/#
 ```
 
-Se você for em um navegador do SO host, então conseguirá acessar http://localhost:8080
+Se você for em um navegador do SO host, então conseguirá acessar http://localhost:8080. Se o SO hospedeiro é um ambiente linux, pode abrir um novo terminal e usar o comando ```curl http://localhost```  ou ainda o ```w3m http://localhost```. Para verificar o funcionamento do nginx internamente, você pode instalar o curl ou w3m e testar com o o link http://localhost. Note que a porta 80 do container é mapeada para o externo sendo acessível ao hospedeiro pela porta 8080
 
 Assim tornamos acessível o nginx executado dentro do container pelo navegador do SO hospedeiro
 
