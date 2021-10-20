@@ -56,7 +56,7 @@ CONTAINER ID   NAME        CPU %     MEM USAGE / LIMIT     MEM %     NET I/O    
 
 O ideal é limitar o uso de memória do container para que ele não possa consumir toda memória do SO hospedeiro
 
-A forma que criamos a imagem **ubuntu/app_nginx** torna necessário usar muitos parâmetros ao criar um container a partir dela. Nesse caso o binário do nginx e suas parametrizações dele. Ao longo do tutorial vamos fazer outras com menos parâmetros.
+A forma que criamos a imagem **ubuntu/app_nginx** torna necessário usar muitos parâmetros ao criar um container a partir dela. Nesse caso o binário do nginx e parametrizações dele. Ao longo do tutorial vamos fazer outras com menos parâmetros.
 
 Agora, primeiro vamos remover a imagem com `docker rmi`. Obtemos o container id no `docker ps`e o image id no `docker images`. Antes excluímos o container e depois a imagem, ambos pelo ID.
 
