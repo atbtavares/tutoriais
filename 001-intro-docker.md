@@ -298,6 +298,8 @@ Como pedimos interatividade ao executar o **docker run** se sairmos do bash a ex
 
 Assim como um **programa** em execução é um **processo**, de forma semelhante uma **imagem docker** em execução é um **container**.
 
+Vamos sair do container para o host:
+
 ```
 root@107fb53948b8:/# exit
 exit
