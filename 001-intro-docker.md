@@ -511,7 +511,7 @@ e3cb1eee0ce0   ubuntu    "/bin/echo Hello! 2"   2 hours ago   Exited (0) 2 hours
 
 Então vamos executar com o `docker run` a mesma imagem  `ubuntu/app_nginx` o mesmo comando mas agora sem interatividade (removeremos o `--rm`e adicionamos; adicionamos `-d` para executar o container em background e imprimir seu id), além disso vamos pedir para executar o nginx informando o binário /usr/sbin/nginx com os padrâmetros `-g "daemon off."`:
 
-`docker run -d -p 8080:80 --name app_nginx ubuntu/nginx /usr/sbin/nginx -g "daemon off;"` 
+`docker run -d -p 8080:80 --name app_nginx ubuntu/app_nginx /usr/sbin/nginx -g "daemon off;"` 
 
 ```
 atbta@ANDRE:~$ docker run -d -p 8080:80 --name app_nginx ubuntu/app_nginx /usr/sbin/nginx -g "daemon off;"
