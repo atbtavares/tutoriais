@@ -8,7 +8,7 @@ Vamos executar um container com **ubuntu** que imprima na tela **Hello** usando 
 docker run ubuntu /bin/echo Hello!
 ```
 
-Como não tem imagem do **ubuntu** na máquina local ela é baixada do Docker Hub. Após o docker baixar o **ubuntu** é executado o binário **`bin/echo`** dele para o argumento "**Hello!**"
+Como não tem imagem do **ubuntu** na máquina local ela é baixada do Docker Hub. Após o docker baixar o **ubuntu** é executado o binário **`/bin/echo`** dele para o argumento "**Hello!**"
 
 ```
 atbta@ANDRE:~$ docker run ubuntu /bin/echo Hello!
