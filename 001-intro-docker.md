@@ -468,7 +468,7 @@ atbta@ANDRE:~$ docker rm "7cdee1f4cf187f35009f9b0e02b1e535db189136634df432787679
 7cdee1f4cf187f35009f9b0e02b1e535db189136634df432787679abbde04ee9
 ```
 
-Vamos repedir o comando **docker run** adicionando mais um parâmetro para que possamos utilizar o bash, além disso após iniciar o container também vamos rodar o serviço do nginx com o comando linux `service nginx start`
+Vamos repetir o comando **docker run** adicionando mais um parâmetro para que possamos utilizar o bash, além disso após iniciar o container também vamos rodar o serviço do nginx com o comando linux `service nginx start`
 
 ```
 docker run -it --rm -p 8080:80 --name app_nginx ubuntu/app_nginx /bin/bash
