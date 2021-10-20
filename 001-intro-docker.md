@@ -453,7 +453,7 @@ Dessa vez no `docker run` utilizaremos a flag `-rm` indica que o container deve 
 docker run -it --rm -p 8080:80 --name app_nginx ubuntu/app_nginx
 ```
 
-O resultado é um conflito porque o nome `app_nginx`deve ser único já que é um id de container
+O resultado é um conflito porque o nome `app_nginx`deve ser único
 
 ```
 atbta@ANDRE:~$ docker run -it --rm -p 8080:80 --name app_nginx ubuntu/app_nginx
