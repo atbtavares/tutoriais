@@ -455,7 +455,7 @@ Agora vamos criar um **container** a partir da imagem criada **ubuntu/app_nginx*
 Dessa vez no `docker run` utilizaremos a flag `-rm` indica que o container deve ser removido após execução do processo; Já a flag `-p`, indica que há mapeamento entre ambientes interno e externo através de portas do container e do host.
 
 ```
-docker run -it --rm -p 8080:80 --name ubuntu/app_nginx app_nginx
+docker run -it --rm -p 8080:80 --name app_nginx ubuntu/app_nginx
 ```
 
 O resultado é um conflito porque o nome `ubuntu/app_nginx`deve ser único
