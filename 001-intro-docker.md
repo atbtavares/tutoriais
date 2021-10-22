@@ -427,7 +427,7 @@ exit
 Tudo OK. Após sair da máquina vamos executar `docker commit app_nginx` para salvar o estado atual da máquina (container) em uma imagem
 
 ```
-atbta@ANDRE:~$ docker commit 7cdee1f4cf18 ubuntu/app_nginx
+atbta@ANDRE:~$ docker commit 7cdee1f4cf18 app_nginx
 1b2fae00a95c460a50628c7d068aa34a4d0920543e08547dff93f6b834d6b17a
 atbta@ANDRE:~$
 ```
@@ -439,7 +439,7 @@ Verificamos que a imagem criada é um pouco maior devido as instalações que fo
 ```
 atbta@ANDRE:~$ docker images
 REPOSITORY         TAG       IMAGE ID       CREATED          SIZE
-ubuntu/app_nginx   latest    1b2fae00a95c   26 seconds ago   173MB
+app_nginx          latest    1b2fae00a95c   26 seconds ago   173MB
 ubuntu             latest    1318b700e415   2 weeks ago      72.8MB
 ```
 
