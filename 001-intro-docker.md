@@ -338,7 +338,7 @@ atbta@ANDRE:~$
 
 Caso tenha o container tenha parado por algum motivo como: 1) o servidor do docker ter sido desligado ou ter terminado ou 2) você teclou ctrl+c para encerrar a sessão, ou ainda 3) foi executado exit no bash. Nesse caso o container terá sido destruído.
 
-Ao tentar fazer novamente o comando para iniciar o container teremos o seguinte erro. 
+Depois de sair do container, ao tentar fazer novamente o comando para iniciar o container teremos o seguinte erro. 
 
 ```
 atbta@ANDRE:~$ docker run -it --name ubuntu/app_nginx ubuntu
