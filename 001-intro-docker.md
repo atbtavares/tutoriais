@@ -373,7 +373,7 @@ atbta@ANDRE:~$ docker run -it --name app_nginx ubuntu
 root@264d8f062aca:/#
 ```
 
-Agora podemos executar o comando `apt update && apt install -y nginx curl` dentro do container ubuntu/app_nginx
+Agora podemos executar o comando `apt update && apt install -y nginx curl` dentro do container app_nginx
 
 ```
 root@7cdee1f4cf18:/# apt update && apt install -y nginx curl
