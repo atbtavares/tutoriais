@@ -56,7 +56,7 @@ e3cb1eee0ce0  ubuntu  "/bin/echo Hello! 2" 17 seconds ago     Exited (0) 17 seco
 3814c7c99d86  ubuntu  "/bin/echo Hello!"  About a minute ago Exited (0) About a minute ago        gracious_saha
 ```
 
-Um container é volátil e não se deve salvar dados nele. Após o término de sua execução ele é destruido.
+Um container é volátil e não se deve salvar dados nele. Após o término de sua execução ele é destruido. Existem formas de manter dados no container, mas isso é feito com volumes ou com imagens.
 
 
 
