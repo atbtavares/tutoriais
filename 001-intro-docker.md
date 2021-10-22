@@ -450,13 +450,13 @@ Agora vamos criar um container a partir da imagem criada `ubuntu/app_nginx`
 Dessa vez no `docker run` utilizaremos a flag `-rm` indica que o container deve ser removido após execução do processo; Já a flag `-p`, indica que há mapeamento entre ambientes interno e externo através entre de portas do container e do host.
 
 ```
-docker run -it --rm -p 8080:80 --name app_nginx ubuntu/app_nginx
+docker run -it --rm -p 8080:80 --name app_nginx app_nginx
 ```
 
 O resultado é um conflito porque o nome `app_nginx`deve ser único
 
 ```
-atbta@ANDRE:~$ docker run -it --rm -p 8080:80 --name app_nginx ubuntu/app_nginx
+atbta@ANDRE:~$ docker run -it --rm -p 8080:80 --name app_nginx app_nginx
 docker: Error response from daemon: Conflict. The container name "/app_nginx" is already in use by container "7cdee1f4cf187f35009f9b0e02b1e535db189136634df432787679abbde04ee9". You have to remove (or rename) that container to be able to reuse that name.
 See 'docker run --help'.
 ```
