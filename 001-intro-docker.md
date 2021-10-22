@@ -424,7 +424,7 @@ root@7cdee1f4cf18:/# exit
 exit
 ```
 
-Tudo OK. Após sair da máquina vamos executar `docker commit ubuntu/app_nginx`para salvar o estado atual da máquina (container) em uma imagem
+Tudo OK. Após sair da máquina vamos executar `docker commit app_nginx` para salvar o estado atual da máquina (container) em uma imagem
 
 ```
 atbta@ANDRE:~$ docker commit 7cdee1f4cf18 ubuntu/app_nginx
