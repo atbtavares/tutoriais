@@ -454,6 +454,8 @@ Agora vamos criar um **container** a partir da imagem criada **ubuntu/app_nginx*
 
 Dessa vez no `docker run` utilizaremos a flag `-rm` indica que o container deve ser removido após execução do processo; Já a flag `-p`, indica que há mapeamento entre ambientes interno e externo através de portas do container e do host.
 
+Abaixo a porta 80 é a porta interna ao container que o docker faz o mapeamento para 8080
+
 ```
 docker run -it --rm -p 8080:80 --name app_nginx ubuntu/app_nginx
 ```
