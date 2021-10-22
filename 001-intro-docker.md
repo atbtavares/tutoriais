@@ -312,7 +312,7 @@ Em um possível deploy automático com containers não posso fazer algo dentro d
 
 Para nomear um container basta usar no `docker run`o parâmetro `--name`:
 
-`docker run -i -t --name ubuntu/app_nginx ubuntu`
+`docker run -i -t --name app_nginx ubuntu`
 
 Agora vamos configurar uma máquina com nginx a partir dos seguintes passos:
 
@@ -321,7 +321,7 @@ Agora vamos configurar uma máquina com nginx a partir dos seguintes passos:
 * Vamos encerrar a sessão
 
 ```
-atbta@ANDRE:~$ docker run -it --name ubuntu/app_nginx ubuntu
+atbta@ANDRE:~$ docker run -it --name app_nginx ubuntu
 root@df964faea9a1:/# apt update && apt install nginx -y
 Get:1 http://security.ubuntu.com/ubuntu focal-security InRelease [114 kB]
 Get:2 http://archive.ubuntu.com/ubuntu focal InRelease [265 kB]
@@ -341,12 +341,12 @@ Caso tenha o container tenha parado por algum motivo como: 1) o servidor do dock
 Depois de sair do container, ao tentar fazer novamente o comando para iniciar o container teremos o seguinte erro. 
 
 ```
-atbta@ANDRE:~$ docker run -it --name ubuntu/app_nginx ubuntu
+atbta@ANDRE:~$ docker run -it --name app_nginx ubuntu
 docker: Error response from daemon: Conflict. The container name "ubuntu/app_nginx" is already in use by container "df964faea9a137edcb0b30b851fc2b16ccf271b68dd44acecd9ba5683aeae98c". You have to remove (or rename) that container to be able to reuse that name.
 See 'docker run --help'.
 ```
 
-Isso aconteceu porque utilizamos o mesmo nome ```ubuntu/app_nginx```
+Isso aconteceu porque utilizamos o mesmo nome ```app_nginx```
 
 Para resolver vamos apagar esse container então iniciar um novo onde repetiremos as configurações, já que o antigo teve sua execução terminada. Lembre-se de que após executado o container perde a memória e o que foi instalado, bem como arquivos criados. 
 
@@ -357,8 +357,10 @@ docker rm "df964faea9a137edcb0b30b851fc2b16ccf271b68dd44acecd9ba5683aeae98c"
 ```
 atbta@ANDRE:~$ docker rm "df964faea9a137edcb0b30b851fc2b16ccf271b68dd44acecd9ba5683aeae98c"
 df964faea9a137edcb0b30b851fc2b16ccf271b68dd44acecd9ba5683aeae98c
+
 atbta@ANDRE:~$ docker ps
 CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+
 atbta@ANDRE:~$ docker ps -a
 CONTAINER ID   IMAGE     COMMAND                CREATED          STATUS                   PORTS  NAMES
 107fb53948b8   ubuntu    "/bin/bash"            14 minutes ago   Exited (0) 6 minutes ago        modest_cray
@@ -369,7 +371,7 @@ e3cb1eee0ce0   ubuntu    "/bin/echo Hello! 2"   17 minutes ago   Exited (0) 17 m
 Então criamos um novo container
 
 ```
-atbta@ANDRE:~$ docker run -it --name ubuntu/app_nginx ubuntu
+atbta@ANDRE:~$ docker run -it --name app_nginx ubuntu
 root@264d8f062aca:/#
 ```
 
@@ -424,7 +426,10 @@ root@7cdee1f4cf18:/# exit
 exit
 ```
 
-Tudo OK. Após sair da máquina vamos executar `docker commit ubuntu/app_nginx` para salvar o estado atual da máquina (container) em uma imagem
+Tudo OK. Após sair do container com  `exit` vamos executar `docker commit app_nginx` para salvar o estado atual da máquina (container) em uma imagem com o nome ubuntu/app_nginx
+
+Deve-se usar o mesmo id desse container que teve a execução terminada `7cdee1f4cf18`
+
 
 ```
 atbta@ANDRE:~$ docker commit 7cdee1f4cf18 ubuntu/app_nginx
@@ -434,7 +439,7 @@ atbta@ANDRE:~$
 
 
 
-Verificamos que a imagem criada é um pouco maior devido as instalações que foram realizadas.
+Verificamos que a imagem criada é maior devido as instalações que foram realizadas: pacotes nginx e curl
 
 ```
 atbta@ANDRE:~$ docker images
@@ -445,7 +450,7 @@ ubuntu             latest    1318b700e415   2 weeks ago      72.8MB
 
  **Usar  o `docker commit` não é recomendado para salvar uma imagem**. Em outro momento veremos a forma mais adequada para realizar essa operação.
 
-Agora vamos criar um container a partir da imagem criada `ubuntu/app_nginx`
+Agora vamos criar um **container** a partir da imagem criada **ubuntu/app_nginx**
 
 Dessa vez no `docker run` utilizaremos a flag `-rm` indica que o container deve ser removido após execução do processo; Já a flag `-p`, indica que há mapeamento entre ambientes interno e externo através entre de portas do container e do host.
 
