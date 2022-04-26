@@ -41,7 +41,7 @@ atbta@ANDRE:~$ docker run ubuntu /bin/echo Hello! 2
 Hello! 2
 ```
 
-Um novo container com ubuntu foi criado, o comando bash echo foi executado e seu resultado foi para a sua saída padrão "Hello! 2". Para verificar que o container executou e terminou podemos usar o comando :
+Um novo container com ubuntu foi criado, o comando bash echo foi executado nele e seu resultado foi para a sua saída padrão "Hello! 2". Para verificar que o container executou e terminou podemos usar o comando :
 
 ```bash
 docker ps -a
