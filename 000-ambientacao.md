@@ -1,11 +1,12 @@
 # Tutorial hands-on docker (0/10)
 
-Essa sessão é basicamente um overview simples e rápido. 
+Essa sessão é basicamente um overview simples, direto e rápido. 
 
 Requisitos:
 
 * As outras páginas do tutorial são bem práticas e você já deve ter instalado o docker;
 * A medida que for lendo, execute os comandos no seu computador.
+* Recomendo fortemente o uso de https://labs.play-with-docker.com que é um playground (docker já instalado) para aprender 
 
 A principal função do docker é a virtualização do ambiente da aplicação.
 
