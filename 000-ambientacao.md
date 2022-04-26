@@ -6,7 +6,7 @@ Requisitos:
 
 * As outras páginas do tutorial são bem práticas e você já deve ter instalado o docker;
 * A medida que for lendo, execute os comandos no seu computador.
-* Recomendo fortemente o uso de https://labs.play-with-docker.com que é um playground (docker já instalado) para aprender 
+* Recomendo fortemente o uso da [máquina play-with-docker](https://labs.play-with-docker.com) que é um playground (docker já instalado) para aprender 
 
 A principal função do docker é a virtualização do ambiente da aplicação.
 
