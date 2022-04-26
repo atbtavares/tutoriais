@@ -306,7 +306,7 @@ exit
 atbta@ANDRE:~$
 ```
 
-Em um possível deploy automático com containers não posso fazer algo dentro do container para resolver qualquer problema, ou até mesmo realizar alguma configuração. Toda parametrização de deploy automático deve ser feita na imagem. 
+Em uma implementação de deploy automático não posso fazer algo dentro do container para resolver qualquer problema, ou até mesmo realizar alguma configuração. Toda parametrização de deploy automático deve ser feita na imagem. 
 
 ## Criando um container com nginx 
 
