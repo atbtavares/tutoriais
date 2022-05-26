@@ -279,7 +279,7 @@ eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
 A faixa de IP é **172.17.0.0** com máscara **255.255.0.0** que é bem diferente do IP do SO hospedeiro. 
 Quando criamos uma interface de rede para o container usamos somente o IP do host.
 
-Evitamos utilizar o IP do container porque a cada **docker run** ele vai mudar. Então quando se trabalha com **portainer** não se utiliza o IP do container mas sim o IP do SO hospedeiro. Os DNSs que um cliente vê não vai ter o IP do container, mas sim do SO hospedeiro.
+Evitamos utilizar o IP do container porque a cada **docker run** ele vai mudar. Então quando se trabalha com **portainer** não se utiliza o IP do container mas sim o IP do SO hospedeiro. Os servidores de DNS que um cliente vê não vão ter o IP do container, mas sim o ip do SO hospedeiro.
 
 Podemos verificar que o id do container ubuntu que criamos está listado em /etc/host: **107fb53948b8**
 
