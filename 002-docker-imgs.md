@@ -25,7 +25,7 @@ ubuntu/app_nginx   latest    1b2fae00a95c   20 hours ago   173MB
 ubuntu             latest    1318b700e415   2 weeks ago    72.8MB
 ```
 
-Agora vamos iniciar essa imagem num container em background com o comando **`docker run -p 8080:80 -d --name app_nginx ubuntu/app_nginx  /usr/bin/nginx -g "daemon off;"`**. O parâmetro `--name` dá nome ao container. O `-p` mapeia a porta 80 do container para 8080 do hospedeiro.
+Agora vamos iniciar essa imagem num container em background com o comando **`docker run -p 8080:80 -d --name app_nginx ubuntu/app_nginx  /usr/sbin/nginx -g "daemon off;"`**. O parâmetro `--name` dá nome ao container. O `-p` mapeia a porta 80 do container para 8080 do hospedeiro.
 
 ```
 atbta@ANDRE:~$ docker run -p 8080:80 -d --name app_nginx ubuntu/app_nginx  /usr/sbin/nginx -g "daemon off;"
